@@ -18,7 +18,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 
 // Initialize Cloud Firestore and get a reference to the service
 const database = getFirestore(app);
