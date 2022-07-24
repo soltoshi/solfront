@@ -1,6 +1,8 @@
 import { collection, addDoc } from "firebase/firestore";
 import db from "./database";
 
+const COLLECTION_NAME = 'paymentlinks';
+
 const createPaymentLink = async (
   merchant: String,
   productCurrency: String,
@@ -8,8 +10,7 @@ const createPaymentLink = async (
   productPrice: Number,
 ) => {
   try {
-    // TODO: use a constant ref to the collection name
-    const docRef = await addDoc(collection(db, "paymentlinks"), {
+    const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       // TODO: generate ID
       merchant: merchant,
       productCurrency: productCurrency,
