@@ -33,3 +33,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# ignore for typescript according to next documentation:
+# https://nextjs.org/docs/basic-features/typescript#existing-projects
+next-env.d.ts
