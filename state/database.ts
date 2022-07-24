@@ -14,7 +14,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: "G-HH45XES41M",
-  databaseURL: "https://ecosoul-713a3-default-rtdb.firebaseio.com/",
 };
 
 // Initialize Firebase
