@@ -1,14 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { createMerchant } from "../state/merchant";
 
 export default function Home() {
-
-  const testCreateMerchant = async () => {
-    await createMerchant('Test Merchant Creation');
-  }
-
   return (
     <div className={styles.container}>
       <Head>
