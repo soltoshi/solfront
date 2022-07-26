@@ -5,12 +5,19 @@ import generateDocumentId from "./util/generateDocumentId";
 const COLLECTION_NAME = 'paymentlinks';
 const COLLECTION_PREFIX = 'pymtlink';
 
-const createPaymentLink = async (
-  merchant: String,
-  productCurrency: String,
-  productName: String,
-  productPrice: Number,
-) => {
+interface CreatePaymentLinkParams {
+  merchant: String;
+  productCurrency: String;
+  productName: String;
+  productPrice: Number;
+}
+
+const createPaymentLink = async ({
+  merchant,
+  productCurrency,
+  productName,
+  productPrice,
+}: CreatePaymentLinkParams) => {
   try {
     const generatedId = generateDocumentId(COLLECTION_PREFIX);
     await setDoc(doc(db, COLLECTION_NAME, generatedId), {
