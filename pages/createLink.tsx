@@ -17,15 +17,26 @@ import {
 } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useFormik } from "formik";
+import { createPaymentLink } from "../state/paymentLink";
+import { TODO_MERCHANT } from "../state/constants";
+
+const DEFAULT_PRICE_VALUE = 10.00
 
 const CreateLink: NextPage = () => {
   const formik = useFormik({
     initialValues: {
       product: '',
       priceCurrency: '',
-      price: 0.00,
+      price: DEFAULT_PRICE_VALUE,
     },
     onSubmit: (values) => {
+      createPaymentLink({
+        merchant: TODO_MERCHANT,
+        productCurrency: values.priceCurrency,
+        productName: values.product,
+        productPrice: values.price,
+      });
+
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -76,7 +87,7 @@ const CreateLink: NextPage = () => {
 
               <FormControl>
                 <FormLabel>Price</FormLabel>
-                <NumberInput step={5} precision={2} defaultValue={10.00} min={1.00} max={100.00}>
+                <NumberInput step={5} precision={2} defaultValue={DEFAULT_PRICE_VALUE} min={1.00} max={100.00}>
                   <NumberInputField
                     id="price"
                     name="price"
