@@ -30,6 +30,7 @@ const CreateLink: NextPage = () => {
       price: DEFAULT_PRICE_VALUE,
     },
     onSubmit: (values) => {
+      // TODO: handle form validation
       createPaymentLink({
         merchant: TODO_MERCHANT,
         productCurrency: values.priceCurrency,

@@ -20,6 +20,7 @@ const CreateMerchant: NextPage = () => {
       email: '',
     },
     onSubmit: (values) => {
+      // TODO: handle form validation
       createMerchant({
         name: values.name,
         email: values.email,
