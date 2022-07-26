@@ -15,10 +15,21 @@ import {
    Select,
    VStack
 } from "@chakra-ui/react";
-
 import { NextPage } from "next";
+import { useFormik } from "formik";
 
 const CreateLink: NextPage = () => {
+  const formik = useFormik({
+    initialValues: {
+      product: '',
+      priceCurrency: '',
+      price: 0.00,
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   return (
     <div>
       <Head>
@@ -28,49 +39,67 @@ const CreateLink: NextPage = () => {
       </Head>
 
       <main>
-
         <VStack>
           <Heading as='h3' size='lg' marginBottom='32px'>
             Create a payment link
           </Heading>
-          <VStack spacing='16px' align='left'>
-            <FormControl>
-              <FormLabel>Product</FormLabel>
-              <Input type='text'/>
-              <FormHelperText>Your product's name</FormHelperText>
-            </FormControl>
+          <form onSubmit={formik.handleSubmit}>
+            <VStack spacing='16px' align='left'>
+              <FormControl>
+                <FormLabel>Product</FormLabel>
+                <Input
+                  type='text'
+                  id='product'
+                  name='product'
+                  onChange={formik.handleChange}
+                  value={formik.values.product}
+                />
+                <FormHelperText>Your product's name</FormHelperText>
+              </FormControl>
 
-            <FormControl>
-              <FormLabel>Price currency</FormLabel>
-              <Select placeholder='Select price currency'>
-                <option value='USD'>USD</option>
-                <option value='SOL'>SOL</option>
-              </Select>
-              {/* TODO: maybe on the merchant side this should just be USD,and
-              the customer can render SOL/USD */}
-              <FormHelperText>Currency to denominate in</FormHelperText>
-            </FormControl>
+              <FormControl>
+                <FormLabel>Price currency</FormLabel>
+                <Select
+                  placeholder='Select price currency'
+                  id='priceCurrency'
+                  name="priceCurrency"
+                  onChange={formik.handleChange}
+                  value={formik.values.priceCurrency}
+                >
+                  <option value='USD'>USD</option>
+                  <option value='SOL'>SOL</option>
+                </Select>
+                {/* TODO: maybe on the merchant side this should just be USD,and
+                the customer can render SOL/USD */}
+                <FormHelperText>Currency to denominate in</FormHelperText>
+              </FormControl>
 
-            <FormControl>
-              <FormLabel>Price</FormLabel>
-              <NumberInput step={5} precision={2} defaultValue={10.00} min={1.00} max={100.00}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-          </VStack>
+              <FormControl>
+                <FormLabel>Price</FormLabel>
+                <NumberInput step={5} precision={2} defaultValue={10.00} min={1.00} max={100.00}>
+                  <NumberInputField
+                    id="price"
+                    name="price"
+                    onChange={formik.handleChange}
+                    value={formik.values.price}
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+            </VStack>
 
-          <Button
-            // TODO: figure out why this margin gets overridden
-            marginTop={50}
-          >
-            Create payment link
-          </Button>
+            <Button
+              // TODO: figure out why this margin gets overridden
+              marginTop={50}
+              type="submit"
+            >
+              Create payment link
+            </Button>
+          </form>
         </VStack>
-
       </main>
     </div>
   );
