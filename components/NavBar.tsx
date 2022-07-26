@@ -16,6 +16,8 @@ import {
   useColorModeValue,
   Stack,
 } from '@chakra-ui/react';
+
+import NextLink from "next/link";
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 
 const Links = ['🚪 SOLFRONT'];
@@ -60,14 +62,18 @@ export default function NavBar() {
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
-            <Button
-              variant={'solid'}
-              colorScheme={'teal'}
-              size={'sm'}
-              mr={4}
-              leftIcon={<AddIcon />}>
-              Action
-            </Button>
+            <NextLink href='/createLink' passHref>
+              <Button
+                as="a"
+                variant={'solid'}
+                colorScheme={'teal'}
+                size={'sm'}
+                mr={4}
+                leftIcon={<AddIcon />}>
+                Create payment link
+              </Button>
+            </NextLink>
+
             <Menu>
               <MenuButton
                 as={Button}
