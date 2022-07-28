@@ -1,9 +1,10 @@
-import { setDoc, doc } from "firebase/firestore";
+import generatePaymentLinkSlug from "../util/generate_link_slug";
 import db from "./database";
 import generateDocumentId from "./util/generateDocumentId";
 
 const COLLECTION_NAME = 'paymentlinks';
 const COLLECTION_PREFIX = 'pymtlink';
+const PAYMENT_LINK_DOMAIN = 'pay.solfront.app';
 
 interface CreatePaymentLinkParams {
   merchant: String;
@@ -25,6 +26,7 @@ const createPaymentLink = async ({
       productCurrency: productCurrency,
       productName: productName,
       productPrice: productPrice,
+      link: `${PAYMENT_LINK_DOMAIN}/${generatePaymentLinkSlug()}`,
     });
     console.log("Created payment link with id", generatedId);
   } catch (e) {
