@@ -26,6 +26,7 @@ const createPaymentLink = async ({
       merchant: merchant,
       productCurrency: productCurrency,
       productName: productName,
+      // TODO: normalize product price
       productPrice: productPrice,
       link: `${PAYMENT_LINK_DOMAIN}/${generatePaymentLinkSlug()}`,
     });
@@ -38,8 +39,8 @@ const createPaymentLink = async ({
 const getPaymentLinks = async() => {
   try {
     const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, '=', JSON.stringify(doc.data));
+    return querySnapshot.docs.map((docSnapshot) => {
+      return docSnapshot.data();
     });
   } catch (e) {
     console.error("Error loading all payment links: ", e);

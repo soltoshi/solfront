@@ -1,11 +1,24 @@
 import { Container, Heading, Wrap, WrapItem } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import PaymentLinkCard from "../components/PaymentLinkCard";
+import { getPaymentLinks } from "../state/paymentLink";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const [paymentLinks, setPaymentLinks] = useState([]);
+
+  const loadPaymentLinks = async () => {
+    const data = await getPaymentLinks();
+    setPaymentLinks(data);
+  };
+
+  useEffect(() => {
+    loadPaymentLinks();
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -22,30 +35,19 @@ export default function Home() {
             Your payment links
           </Heading>
           <Wrap spacing={24} shouldWrapChildren={true} align='center'>
-            <PaymentLinkCard
-              link="pay.solfront.app/JFOG"
-              productName="Chair"
-              price="39"
-              currency="USD"
-            />
-            <PaymentLinkCard
-              link="pay.solfront.app/JFOG"
-              productName="Chair"
-              price="39"
-              currency="USD"
-            />
-            <PaymentLinkCard
-              link="pay.solfront.app/JFOG"
-              productName="Chair"
-              price="39"
-              currency="USD"
-            />
-            <PaymentLinkCard
-              link="pay.solfront.app/JFOG"
-              productName="Chair"
-              price="39"
-              currency="USD"
-            />
+            {
+              paymentLinks.map((paymentLinkData) => {
+                return (
+                  <PaymentLinkCard
+                    key={paymentLinkData.link}
+                    link={paymentLinkData.link}
+                    productName={paymentLinkData.productName}
+                    price={paymentLinkData.productPrice}
+                    currency={paymentLinkData.productCurrency}
+                  />
+                );
+              })
+            }
           </Wrap>
         </Container>
       </main>
