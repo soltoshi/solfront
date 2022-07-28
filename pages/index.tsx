@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import NavBar from "../components/NavBar";
+import PaymentLinkCard from "../components/PaymentLinkCard";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -53,6 +54,13 @@ export default function Home() {
             </p>
           </a>
         </div>
+
+        <PaymentLinkCard
+          link="pay.solfront.app/JFOG"
+          productName="Chair"
+          price="39"
+          currency="USD"
+        />
       </main>
 
       <footer className={styles.footer}>
