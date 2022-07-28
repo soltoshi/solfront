@@ -1,3 +1,4 @@
+import { setDoc, doc, getDocs, collection } from "firebase/firestore";
 import generatePaymentLinkSlug from "../util/generate_link_slug";
 import db from "./database";
 import generateDocumentId from "./util/generateDocumentId";
@@ -34,6 +35,18 @@ const createPaymentLink = async ({
   }
 }
 
+const getPaymentLinks = async() => {
+  try {
+    const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, '=', JSON.stringify(doc.data));
+    });
+  } catch (e) {
+    console.error("Error loading all payment links: ", e);
+  }
+}
+
 export {
   createPaymentLink,
+  getPaymentLinks,
 };
