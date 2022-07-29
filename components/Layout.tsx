@@ -1,6 +1,7 @@
 import NavBar from "./NavBar"
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import { Box } from "@chakra-ui/react";
 
  const Layout = ({children}) => {
   return (
@@ -8,7 +9,11 @@ import styles from "../styles/Home.module.css";
       <NavBar />
 
       <main>
-        {children}
+        <Box
+          padding={'2rem 2rem'}
+        >
+          {children}
+        </Box>
       </main>
 
       <footer className={styles.footer}>
