@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 
  const Layout = ({children}) => {
   return (
-    <div className={styles.container}>
+    <>
       <NavBar />
 
       <main>
@@ -23,7 +23,7 @@ import styles from "../styles/Home.module.css";
           </span>
         </a>
       </footer>
-    </div>
+    </>
   )
  }
 
