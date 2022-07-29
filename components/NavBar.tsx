@@ -62,7 +62,7 @@ export default function NavBar() {
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
-            <NextLink href='/createLink' passHref>
+            <NextLink href='/create_link' passHref>
               <Button
                 as="a"
                 variant={'solid'}
