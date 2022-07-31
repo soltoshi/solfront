@@ -1,4 +1,4 @@
-import { setDoc, doc, getDocs, collection } from "firebase/firestore";
+import { setDoc, doc, getDocs, collection, getDoc } from "firebase/firestore";
 import generatePaymentLinkSlug from "../util/generate_link_slug";
 import db from "./database";
 import generateDocumentId from "./util/generateDocumentId";
@@ -8,10 +8,14 @@ const COLLECTION_PREFIX = 'pymtlink';
 const PAYMENT_LINK_DOMAIN = 'pay.solfront.app';
 
 interface CreatePaymentLinkParams {
-  merchant: String;
-  productCurrency: String;
-  productName: String;
-  productPrice: Number;
+  merchant: string;
+  productCurrency: string;
+  productName: string;
+  productPrice: number;
+}
+
+interface GetPaymentLinkParams {
+  linkId: string;
 }
 
 const createPaymentLink = async ({
@@ -36,6 +40,16 @@ const createPaymentLink = async ({
   }
 }
 
+const getPaymentLink = async({linkId}: GetPaymentLinkParams) => {
+  try {
+    const docRef = doc(db, COLLECTION_NAME, linkId);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  } catch (e) {
+    console.error(`Error loading ${linkId}: `, e);
+  }
+}
+
 const getPaymentLinks = async() => {
   try {
     const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
@@ -49,5 +63,6 @@ const getPaymentLinks = async() => {
 
 export {
   createPaymentLink,
+  getPaymentLink,
   getPaymentLinks,
 };
