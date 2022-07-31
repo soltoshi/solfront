@@ -20,7 +20,7 @@ import {
 import NextLink from "next/link";
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 
-const Links = ['🚪 SOLFRONT'];
+const Links = ['Solfront.'];
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
@@ -31,6 +31,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
+    fontWeight={'bold'}
     href={'/'}>
     {children}
   </Link>
