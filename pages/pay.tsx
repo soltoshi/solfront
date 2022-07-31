@@ -2,8 +2,11 @@ import { Box, Button, Heading, VStack } from "@chakra-ui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 
 const Pay: NextPage = () => {
+
+  const router = useRouter();
 
   // public key of a connected wallet, if there is one
   const {publicKey} = useWallet();
@@ -12,7 +15,7 @@ const Pay: NextPage = () => {
     <>
       <VStack>
         <Heading fontSize={'2xl'}>
-          THIS IS THE PAYMENT PAGE
+          💸 Pay
         </Heading>
 
         <Box marginTop={'48px'}>
@@ -21,6 +24,10 @@ const Pay: NextPage = () => {
 
         <Button
           disabled={publicKey === null}
+          onClick={() => {
+            // router.push(`${router.route}/checkout`);
+            router.push(`/checkout`);
+          }}
         >
           Pay
         </Button>
