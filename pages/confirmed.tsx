@@ -1,4 +1,4 @@
-import { Box, Button, Heading, VStack } from "@chakra-ui/react";
+import { Box, Button, Heading, Link, VStack } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Keypair, Transaction } from "@solana/web3.js";
@@ -27,6 +27,17 @@ const Confirmed: NextPage = () => {
         <Heading fontSize={'2xl'}>
           ✅ Confirmed
         </Heading>
+
+        <Box
+          marginTop={'48px!'}
+          textDecoration={'underline'}
+        >
+          <Link
+            href={'/pay'}
+          >
+            🔙 Go back to pay page
+          </Link>
+        </Box>
       </VStack>
     </>
   )
