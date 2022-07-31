@@ -4,17 +4,16 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import PaymentLinkCard from "../components/PaymentLinkCard";
-import { getPaymentLink } from "../state/paymentLink";
-
-// TODO: remove stub
-const LINK_ID = 'pymtlink_AzIdRSYc2C0IX2rPBVWG';
+import PaymentLinkCard from "../../components/PaymentLinkCard";
+import { getPaymentLink } from "../../state/paymentLink";
 
 const Pay: NextPage = () => {
   const router = useRouter();
+  const { paymentLinkId } = router.query;
 
   // state that renders
   const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // public key of a connected wallet, if there is one
   const {publicKey} = useWallet();
@@ -23,11 +22,16 @@ const Pay: NextPage = () => {
   const loadPaymentLink = async (linkId) => {
     const data = await getPaymentLink({linkId: linkId});
     setData(data);
-    console.log(JSON.stringify(data));
+    setIsLoading(false);
+    console.log(`loaded ${linkId}:`, JSON.stringify(data));
   }
   useEffect(() => {
-    loadPaymentLink(LINK_ID);
-  }, []);
+    if (!paymentLinkId) {
+      return;
+    }
+    setIsLoading(true);
+    loadPaymentLink(paymentLinkId);
+  }, [paymentLinkId]);
 
   const apiParams = {};
 
@@ -43,8 +47,10 @@ const Pay: NextPage = () => {
         </Box>
 
         {
-          !data.link ?
-           <></> :
+          isLoading ?
+           <Box width="100%" display="flex" justifyContent="center" marginTop={'48px!'}>
+            <Spinner/>
+           </Box> :
            <PaymentLinkCard
              link={data.link}
              productName={data.productName}
@@ -59,6 +65,7 @@ const Pay: NextPage = () => {
           marginTop={'48px!'}
           size={'lg'}
           colorScheme={'green'}
+          width={'25%'}
 
           disabled={publicKey === null}
           onClick={() => {
