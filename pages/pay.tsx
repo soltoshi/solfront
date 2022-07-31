@@ -20,7 +20,7 @@ const Pay: NextPage = () => {
         </Box>
 
         <Button
-          // disabled={publicKey === null}
+          disabled={publicKey === null}
         >
           Pay
         </Button>
