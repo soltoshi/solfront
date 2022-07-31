@@ -18,7 +18,7 @@ interface PaymentLinkCardProps {
   currency: string;
 
   // for customizing appearance
-  offset: boolean;
+  offset?: boolean;
 }
 
 function formatPrice(price: string, currency: string): string {
