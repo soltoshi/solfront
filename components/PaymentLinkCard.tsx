@@ -16,6 +16,9 @@ interface PaymentLinkCardProps {
   productName: string;
   price: string;
   currency: string;
+
+  // for customizing appearance
+  offset: boolean;
 }
 
 function formatPrice(price: string, currency: string): string {
@@ -43,7 +46,7 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
         zIndex={1}>
         <Box
           rounded={'lg'}
-          // mt={-12}
+          mt={props.offset ? -12 : 0}
           pos={'relative'}
           height={'230px'}
           _after={{
