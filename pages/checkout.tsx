@@ -16,9 +16,6 @@ const Checkout: NextPage = () => {
   const [transaction, setTransaction] = useState<Transaction | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Read the payment link details
-  const apiParams = {};
-
   // Generate unique reference that'll be used for this transaction
   const reference = useMemo(() => Keypair.generate().publicKey, []);
 
