@@ -5,6 +5,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PaymentLinkCard from "../../components/PaymentLinkCard";
+import { usePayContext } from "../../context/PayContext";
 import { getPaymentLink } from "../../state/paymentLink";
 
 const Pay: NextPage = () => {
@@ -13,6 +14,7 @@ const Pay: NextPage = () => {
 
   // state that renders
   const [data, setData] = useState({});
+  const {price, paymentLink, setPrice, setPaymentLink} = usePayContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // public key of a connected wallet, if there is one
@@ -22,8 +24,13 @@ const Pay: NextPage = () => {
   const loadPaymentLink = async (linkId) => {
     const data = await getPaymentLink({linkId: linkId});
     setData(data);
+
     setIsLoading(false);
     console.log(`loaded ${linkId}:`, JSON.stringify(data));
+
+    // set data for the context provider
+    setPrice(data.productPrice);
+    setPaymentLink(linkId);
   }
   useEffect(() => {
     if (!paymentLinkId) {
@@ -54,7 +61,7 @@ const Pay: NextPage = () => {
            <PaymentLinkCard
              link={data.link}
              productName={data.productName}
-             price={data.productPrice}
+             price={price.toString()}
              currency={data.productCurrency}
 
              offset={true}
