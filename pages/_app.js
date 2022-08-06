@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { PayContextProvider } from "../context/PayContext";
 import { ChakraProvider } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import Head from "next/head";
@@ -29,19 +30,22 @@ function MyApp({ Component, pageProps }) {
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
           <ChakraProvider>
-            <Layout>
-              <Head>
-                <title>Solfront</title>{" "}
-                <meta
-                  name="description"
-                  content="Solfront
-                enables your business to effortlessly create payment links, accept
-                cryptocurrency for USD, and incentivize your customers to come back."
-                />
-                <link rel="icon" href="/favicon.ico" />
-              </Head>
-              <Component {...pageProps} />
-            </Layout>
+            {/* TODO: we really only want to render this for payment pages */}
+            <PayContextProvider>
+              <Layout>
+                <Head>
+                  <title>Solfront</title>{" "}
+                  <meta
+                    name="description"
+                    content="Solfront
+                  enables your business to effortlessly create payment links, accept
+                  cryptocurrency for USD, and incentivize your customers to come back."
+                  />
+                  <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <Component {...pageProps} />
+              </Layout>
+            </PayContextProvider>
           </ChakraProvider>
         </WalletModalProvider>
       </WalletProvider>
