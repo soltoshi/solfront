@@ -6,6 +6,9 @@ import calculatePrice from "../../lib/calculatePrice"
 
 export type MakeTransactionInputData = {
   account: string,
+  reference: string,
+  price: number,
+  paymentLink: string,
 }
 
 export type MakeTransactionOutputData = {
@@ -21,23 +24,24 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<MakeTransactionOutputData | ErrorOutput>
 ) {
+  console.log('[make_transaction] received request with body', JSON.stringify(req.body));
+
   try {
+    const {account, reference, price, paymentLink} = req.body as MakeTransactionInputData;
+
     // We pass the selected items in the query, calculate the expected cost
-    const amount = calculatePrice(req.query)
-    if (amount.toNumber() === 0) {
+    if (price === 0) {
       res.status(400).json({ error: "Can't checkout with charge of 0" })
       return
     }
 
     // We pass the reference to use in the query
-    const { reference } = req.query
     if (!reference) {
       res.status(400).json({ error: "No reference provided" })
       return
     }
 
     // We pass the buyer's public key in JSON body
-    const { account } = req.body as MakeTransactionInputData
     if (!account) {
       res.status(40).json({ error: "No account provided" })
       return
@@ -59,9 +63,14 @@ export default async function handler(
     })
 
     // Create the instruction to send SOL from the buyer to the shop
+    const priceInSol = 0.0001;
     const transferInstruction = SystemProgram.transfer({
       fromPubkey: buyerPublicKey,
-      lamports: amount.multipliedBy(LAMPORTS_PER_SOL).toNumber(),
+      // TODO: this should actually be
+      // 1. USD price
+      // 2. SOL price
+      // 3. solAmount * LAMPORTS_PER_SOL
+      lamports: priceInSol * LAMPORTS_PER_SOL,
       toPubkey: shopPublicKey,
     })
 
