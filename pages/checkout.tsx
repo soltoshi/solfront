@@ -10,6 +10,8 @@ import { MakeTransactionInputData, MakeTransactionOutputData } from "./api/make_
 import { findReference, FindReferenceError } from "@solana/pay";
 import { usePayContext } from "../context/PayContext";
 
+const MERCHANT_SOL_WALLET = 't4NDTNUX9n4MYe42i62cBRzNNJw9GZLDdBdv5z1w972';
+
 const Checkout: NextPage = () => {
   const router = useRouter();
   const { connection } = useConnection();
@@ -17,10 +19,26 @@ const Checkout: NextPage = () => {
 
   // State to hold API response fields
   const [transaction, setTransaction] = useState<Transaction | null>(null);
-  const {price, paymentLink} = usePayContext();
+  const {price, paymentLink, product} = usePayContext();
 
   // Generate the unique reference which will be used for this transaction
   const reference = useMemo(() => Keypair.generate().publicKey, []);
+
+  // TODO: tried to use Solana Pay transfer request scheme[0] here but linking
+  // to it results in an error since there's no handler for the protocol in the
+  // browser. The behavior I expected was that Phantom would just open.
+  // [0] https://docs.solanapay.com/core/transfer-request/merchant-integration
+  //
+  // const transferRequestFields: TransferRequestURLFields = {
+  //   recipient: new PublicKey(MERCHANT_SOL_WALLET),
+  //   amount: new BigNumber(0.001),
+  //   reference: reference,
+  //   label: 'Solfront store',
+  //   message: `Solfront - your order - ${product}`,
+  //   memo: paymentLink.toString(),
+  // };
+  // const solanaPayUrl = encodeURL(transferRequestFields);
+  // console.log('[checkout] solana pay url created: ', solanaPayUrl.toString());
 
   // Use our API to fetch the transaction for the selected items
   async function getTransaction() {
@@ -62,7 +80,7 @@ const Checkout: NextPage = () => {
     getTransaction()
   }, [publicKey])
 
-  // Send the fetched transaction to the connected wallet
+  // // Send the fetched transaction to the connected wallet
   async function trySendTransaction() {
     if (!transaction) {
       return;
@@ -128,6 +146,10 @@ const Checkout: NextPage = () => {
             ➡️ Go to confirmation page
           </Link>
         </Box>
+
+        {/* <CLink href={solanaPayUrl.toString()}>
+          <Button>Solana Pay</Button>
+        </CLink> */}
       </VStack>
     </>
   )
