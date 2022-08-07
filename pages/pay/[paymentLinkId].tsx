@@ -14,7 +14,7 @@ const Pay: NextPage = () => {
 
   // state that renders
   const [data, setData] = useState({});
-  const {price, paymentLink, setPrice, setPaymentLink} = usePayContext();
+  const {price, setPrice, setPaymentLink, setProduct} = usePayContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // public key of a connected wallet, if there is one
@@ -31,6 +31,7 @@ const Pay: NextPage = () => {
     // set data for the context provider
     setPrice(data.productPrice);
     setPaymentLink(linkId);
+    setProduct(data.productName);
   }
   useEffect(() => {
     if (!paymentLinkId) {
