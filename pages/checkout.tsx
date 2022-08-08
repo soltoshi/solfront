@@ -4,11 +4,13 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Keypair, Transaction } from "@solana/web3.js";
 import { NextPage } from "next";
 import Link from "next/link";
+import BigNumber from "bignumber.js";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MakeTransactionInputData, MakeTransactionOutputData } from "./api/make_transaction";
-import { findReference, FindReferenceError } from "@solana/pay";
+import { findReference, FindReferenceError, encodeURL, TransferRequestURLFields, createQR } from "@solana/pay";
 import { usePayContext } from "../context/PayContext";
+import { shopAddress } from "../lib/addresses";
 
 const Checkout: NextPage = () => {
   const router = useRouter();
@@ -20,24 +22,43 @@ const Checkout: NextPage = () => {
   const [transaction, setTransaction] = useState<Transaction | null>(null);
   const {price, paymentLink, product} = usePayContext();
 
+  const amount = new BigNumber(price);
+
   // Generate the unique reference which will be used for this transaction
   const reference = useMemo(() => Keypair.generate().publicKey, []);
 
-  // TODO: tried to use Solana Pay transfer request scheme[0] here but linking
-  // to it results in an error since there's no handler for the protocol in the
-  // browser. The behavior I expected was that Phantom would just open.
-  // [0] https://docs.solanapay.com/core/transfer-request/merchant-integration
+  // We allow users the option to cancel the wallet transaction and pay using
+  // the QR code instead with a mobile wallet.
+  // Solana Pay transfer params
   //
-  // const transferRequestFields: TransferRequestURLFields = {
-  //   recipient: new PublicKey(MERCHANT_SOL_WALLET),
-  //   amount: new BigNumber(0.001),
-  //   reference: reference,
-  //   label: 'Solfront store',
-  //   message: `Solfront - your order - ${product}`,
-  //   memo: paymentLink.toString(),
-  // };
-  // const solanaPayUrl = encodeURL(transferRequestFields);
-  // console.log('[checkout] solana pay url created: ', solanaPayUrl.toString());
+  // TODO: tried to use Solana Pay transfer request scheme[0] in a button but
+  // linking to it results in an error since there's no handler for the protocol
+  // in the browser. The behavior I expected was that Phantom would just open.
+  // [0] https://docs.solanapay.com/core/transfer-request/merchant-integration
+  const urlParams: TransferRequestURLFields = {
+    recipient: shopAddress,
+    amount: new BigNumber(0.001),
+    reference,
+    label: "Solfront merchant",
+    message: `Solfront order - ${product}`,
+    memo: paymentLink.toString(),
+  }
+
+  // Encode the params into the format shown
+  const url = encodeURL(urlParams)
+  console.log('[checkout] generating URL for Solana Pay QR code', { url })
+
+  // ref to a div where we'll show the QR code
+  const qrRef = useRef<HTMLDivElement>(null)
+
+  // Show the QR code
+  useEffect(() => {
+    const qr = createQR(url, 384, 'transparent')
+    if (qrRef.current && amount.isGreaterThan(0)) {
+      qrRef.current.innerHTML = ''
+      qr.append(qrRef.current)
+    }
+  })
 
   // Use our API to fetch the transaction for the selected items
   async function getTransaction() {
@@ -138,6 +159,8 @@ const Checkout: NextPage = () => {
           🛍 Checkout
         </Heading>
 
+        {/* We render the QR code for the customer to scan */}
+        <Box ref={qrRef}/>
 
         {
           isLoading ?
@@ -146,8 +169,6 @@ const Checkout: NextPage = () => {
            </Box> :
            <></>
         }
-
-
 
         <Box
           marginTop={'48px!'}
