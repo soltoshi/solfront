@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PaymentLinkCard from "../../components/PaymentLinkCard";
 import { usePayContext } from "../../context/PayContext";
-import { getPaymentLink } from "../../state/paymentLink";
+import { getPaymentLink, getPaymentLinkBySlug } from "../../state/paymentLink";
 
 const Pay: NextPage = () => {
   const router = useRouter();
@@ -21,16 +21,21 @@ const Pay: NextPage = () => {
   const {publicKey} = useWallet();
 
   // Read the payment link details
-  const loadPaymentLink = async (linkId) => {
-    const data = await getPaymentLink({linkId: linkId});
-    setData(data);
+  const loadPaymentLink = async (slug) => {
+    const dataArray = await getPaymentLinkBySlug({slug});
+    if (dataArray.length == 0) {
+      console.error('[pay] no record of payment link with slug', slug);
+      router.push('/404');
+    }
+    setData(dataArray[0]);
 
     setIsLoading(false);
-    console.log(`loaded ${linkId}:`, JSON.stringify(data));
+    console.log(`[pay] loaded payment link ${slug}:`, JSON.stringify(dataArray[0]));
+    const data = dataArray[0];
 
     // set data for the context provider
     setPrice(data.productPrice);
-    setPaymentLink(linkId);
+    setPaymentLink(paymentLinkId);
     setProduct(data.productName);
   }
   useEffect(() => {
