@@ -1,4 +1,4 @@
-import { setDoc, doc, getDocs, collection, getDoc } from "firebase/firestore";
+import { setDoc, doc, getDocs, collection, getDoc, query, where } from "firebase/firestore";
 import generatePaymentLinkSlug from "../util/generate_link_slug";
 import db from "./database";
 import generateDocumentId from "./util/generateDocumentId";
@@ -50,6 +50,19 @@ const getPaymentLink = async({linkId}: GetPaymentLinkParams) => {
   }
 }
 
+const getPaymentLinkBySlug = async ({slug}) => {
+  const linkWithSlug = `${PAYMENT_LINK_DOMAIN}/${slug}`;
+  try {
+    const q = query(collection(db, COLLECTION_NAME), where("link", "==", linkWithSlug));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((docSnapshot) => {
+      return docSnapshot.data();
+    });
+  } catch (e) {
+    console.error(`Error fetching payment link for ${linkWithSlug}: `, e)
+  }
+}
+
 const getPaymentLinks = async() => {
   try {
     const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
@@ -65,4 +78,5 @@ export {
   createPaymentLink,
   getPaymentLink,
   getPaymentLinks,
+  getPaymentLinkBySlug,
 };
