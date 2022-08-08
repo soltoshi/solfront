@@ -1,7 +1,14 @@
+import { PriceStatus, PythHttpClient } from "@pythnetwork/client"
+import { getPythClusterApiUrl, getPythProgramKeyForCluster, PythCluster } from "@pythnetwork/client/lib/cluster"
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base"
 import { clusterApiUrl, Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { NextApiRequest, NextApiResponse } from "next"
 import { shopAddress } from "../../lib/addresses"
+
+const SOLANA_CLUSTER_NAME: PythCluster = 'devnet';
+const SOL_USD_PYTH_SYMBOL = 'Crypto.SOL/USD';
+const pythConnection = new Connection(getPythClusterApiUrl(SOLANA_CLUSTER_NAME));
+const pythPublicKey = getPythProgramKeyForCluster(SOLANA_CLUSTER_NAME);
 
 export type MakeTransactionInputData = {
   account: string,
@@ -45,8 +52,8 @@ export default async function handler(
       res.status(40).json({ error: "No account provided" })
       return
     }
-    const buyerPublicKey = new PublicKey(account)
-    const shopPublicKey = shopAddress
+    const buyerPublicKey = new PublicKey(account);
+    const shopPublicKey = shopAddress;
 
     const network = WalletAdapterNetwork.Devnet
     const endpoint = clusterApiUrl(network)
@@ -59,7 +66,13 @@ export default async function handler(
       recentBlockhash: blockhash,
       // The buyer pays the transaction fee
       feePayer: buyerPublicKey,
-    })
+    });
+
+    // Get the current SOL/USD price from Pyth
+    const pythData = await new PythHttpClient(pythConnection, pythPublicKey).getData();
+    const solUsdPrice = pythData.productPrice.get(SOL_USD_PYTH_SYMBOL).price;
+    const priceStatus = PriceStatus[pythData.productPrice.get(SOL_USD_PYTH_SYMBOL).status]
+    console.log('[make_transaction] got data from Pyth', {solUsdPrice, priceStatus});
 
     // Create the instruction to send SOL from the buyer to the shop
     const priceInSol = 0.0001;
