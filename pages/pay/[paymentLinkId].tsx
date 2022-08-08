@@ -82,7 +82,6 @@ const Pay: NextPage = () => {
 
           disabled={publicKey === null}
           onClick={() => {
-            // router.push(`${router.route}/checkout`);
             router.push(`/checkout`);
           }}
         >
