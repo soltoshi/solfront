@@ -81,7 +81,7 @@ const Pay: NextPage = () => {
             router.push(`/checkout`);
           }}
         >
-          Pay
+          🛍 Checkout
         </Button>
       </VStack>
     </>
