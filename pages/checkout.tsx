@@ -10,8 +10,6 @@ import { MakeTransactionInputData, MakeTransactionOutputData } from "./api/make_
 import { findReference, FindReferenceError } from "@solana/pay";
 import { usePayContext } from "../context/PayContext";
 
-const MERCHANT_SOL_WALLET = 't4NDTNUX9n4MYe42i62cBRzNNJw9GZLDdBdv5z1w972';
-
 const Checkout: NextPage = () => {
   const router = useRouter();
   const { connection } = useConnection();
@@ -88,6 +86,7 @@ const Checkout: NextPage = () => {
       return;
     }
     try {
+      console.log('[checkout] sending tx to wallet', JSON.stringify(transaction));
       await sendTransaction(transaction, connection)
     } catch (e) {
       console.error(e)
