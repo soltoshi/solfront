@@ -6,7 +6,9 @@ import {
   Text,
   Stack,
   Image,
+  Link,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 // TODO: make this image configurable
 const IMAGE = 'https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80';
@@ -31,7 +33,14 @@ function formatPrice(price: string, currency: string): string {
   }
 }
 
+function getSlugFromLink(link: string) {
+  const tokens = link.split('/')
+  return tokens[1];
+}
+
 export default function PaymentLinkCard(props: PaymentLinkCardProps) {
+  const router = useRouter();
+
   return (
     <Center py={12}>
       <Box
@@ -72,11 +81,19 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
             width={282}
             objectFit={'cover'}
             src={IMAGE}
+            alt={''}
           />
         </Box>
         <Stack pt={10} align={'center'}>
           <Text color={'gray.500'} fontSize={'sm'}>
-            {props.link}
+            <Link href={
+              // we do this check since we test locally
+              window.location.hostname == 'localhost' ?
+                `pay/${getSlugFromLink(props.link)}` :
+                `https://${props.link}`
+              }>
+              {props.link}
+            </Link>
           </Text>
           <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
             {props.productName}
