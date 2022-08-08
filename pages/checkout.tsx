@@ -12,6 +12,7 @@ import { findReference, FindReferenceError, encodeURL, TransferRequestURLFields,
 import { usePayContext } from "../context/PayContext";
 import { shopAddress } from "../lib/addresses";
 
+// TODO: affordance for rendering shipping address
 const Checkout: NextPage = () => {
   const router = useRouter();
   const { connection } = useConnection();
