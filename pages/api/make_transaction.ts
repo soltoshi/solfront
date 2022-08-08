@@ -21,6 +21,7 @@ export type MakeTransactionInputData = {
 export type MakeTransactionOutputData = {
   transaction: string,
   message: string,
+  solPrice: number,
 }
 
 type ErrorOutput = {
@@ -89,8 +90,8 @@ export default async function handler(
       '[make_transaction] generated transfer instruction',
       {
         priceInSol,
-        fromAddr: buyerPublicKey,
-        toAddr: shopPublicKey
+        fromAddr: buyerPublicKey.toString(),
+        toAddr: shopPublicKey.toString(),
       }
     );
 
@@ -119,6 +120,7 @@ export default async function handler(
     res.status(200).json({
       transaction: base64,
       message: "Thanks for your order! 🍪",
+      solPrice: priceInSol,
     })
   } catch (err) {
     console.error(err);
