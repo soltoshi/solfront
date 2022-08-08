@@ -11,6 +11,7 @@
     "@chakra-ui/react": "^2.2.4",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@pythnetwork/client": "^2.7.3",
     "@solana-mobile/wallet-adapter-mobile": "^0.0.1-alpha.8",
     "@solana/pay": "^0.2.1",
     "@solana/spl-token": "^0.2.0",
