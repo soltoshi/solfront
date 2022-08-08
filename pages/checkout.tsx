@@ -1,4 +1,4 @@
-import { Box, Heading, VStack } from "@chakra-ui/react";
+import { Box, Heading, VStack, Spinner} from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Keypair, Transaction } from "@solana/web3.js";
@@ -16,6 +16,7 @@ const Checkout: NextPage = () => {
   const router = useRouter();
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // State to hold API response fields
   const [transaction, setTransaction] = useState<Transaction | null>(null);
@@ -73,6 +74,7 @@ const Checkout: NextPage = () => {
     // Deserialize the transaction from the response
     const transaction = Transaction.from(Buffer.from(json.transaction, 'base64'));
     setTransaction(transaction);
+    setIsLoading(true);
     console.log(transaction);
   }
 
@@ -103,6 +105,7 @@ const Checkout: NextPage = () => {
       try {
         // Check if there is any transaction for the reference
         const signatureInfo = await findReference(connection, reference, {finality: 'confirmed'})
+        setIsLoading(false);
         router.push('/confirmed')
       } catch (e) {
         if (e instanceof FindReferenceError) {
@@ -135,6 +138,17 @@ const Checkout: NextPage = () => {
         <Heading fontSize={'2xl'}>
           🛍 Checkout
         </Heading>
+
+
+        {
+          isLoading ?
+           <Box width="100%" display="flex" justifyContent="center" marginTop={'48px!'}>
+            <Spinner/>
+           </Box> :
+           <></>
+        }
+
+
 
         <Box
           marginTop={'48px!'}
