@@ -4,6 +4,7 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base"
 import { clusterApiUrl, Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { NextApiRequest, NextApiResponse } from "next"
 import { shopAddress } from "../../lib/addresses"
+import BigNumber from "bignumber.js";
 
 const SOLANA_CLUSTER_NAME: PythCluster = 'devnet';
 const SOL_USD_PYTH_SYMBOL = 'Crypto.SOL/USD';
@@ -33,7 +34,7 @@ export default async function handler(
   console.log('[make_transaction] received request with body', JSON.stringify(req.body));
 
   try {
-    const {account, reference, price, paymentLink} = req.body as MakeTransactionInputData;
+    const {account, reference, price} = req.body as MakeTransactionInputData;
 
     // We pass the selected items in the query, calculate the expected cost
     if (price === 0) {
@@ -71,20 +72,28 @@ export default async function handler(
     // Get the current SOL/USD price from Pyth
     const pythData = await new PythHttpClient(pythConnection, pythPublicKey).getData();
     const solUsdPrice = pythData.productPrice.get(SOL_USD_PYTH_SYMBOL).price;
-    const priceStatus = PriceStatus[pythData.productPrice.get(SOL_USD_PYTH_SYMBOL).status]
+    const priceStatus = PriceStatus[pythData.productPrice.get(SOL_USD_PYTH_SYMBOL).status];
     console.log('[make_transaction] got data from Pyth', {solUsdPrice, priceStatus});
 
     // Create the instruction to send SOL from the buyer to the shop
-    const priceInSol = 0.0001;
+
+    // SOL price = product price / SOLUSD price
+    const priceInSol = price / solUsdPrice;
     const transferInstruction = SystemProgram.transfer({
+      lamports: Math.round(priceInSol * LAMPORTS_PER_SOL),
       fromPubkey: buyerPublicKey,
-      // TODO: this should actually be
-      // 1. USD price
-      // 2. SOL price
-      // 3. solAmount * LAMPORTS_PER_SOL
-      lamports: priceInSol * LAMPORTS_PER_SOL,
       toPubkey: shopPublicKey,
     })
+
+    console.log(
+      '[make_transaction] generated transfer instruction',
+      {
+        priceInSol,
+        fromAddr: buyerPublicKey,
+        toAddr: shopPublicKey
+      }
+    );
+
 
     // Add the reference to the instruction as a key
     // This will mean this transaction is returned when we query for the reference
