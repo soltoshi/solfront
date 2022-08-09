@@ -1,21 +1,11 @@
-import { Box, Button, Checkbox, Container, Flex, FormControl, FormLabel, Heading, Input, Link, Stack, useColorModeValue, Wrap} from "@chakra-ui/react";
+import { Box, Button, Container, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import PaymentLinkCard from "../components/PaymentLinkCard";
-import { getPaymentLinks } from "../state/paymentLink";
+import { useState } from "react";
 
 const Home: NextPage = () => {
-  const [paymentLinks, setPaymentLinks] = useState([]);
-
-  const loadPaymentLinks = async () => {
-    const data = await getPaymentLinks();
-    setPaymentLinks(data);
-  };
-
-  useEffect(() => {
-    loadPaymentLinks();
-  }, []);
+  const [email, setEmail] = useState<string>('');
+  const [emailSent, setEmailSent] = useState<boolean>(false);
 
   return (
     <>
@@ -43,20 +33,37 @@ const Home: NextPage = () => {
               bg={useColorModeValue('white', 'gray.700')}
               boxShadow={'lg'}
               p={8}>
-              <Stack spacing={8}>
-                <FormControl id="email">
-                  <FormLabel>Email</FormLabel>
-                  <Input type="email"/>
-                </FormControl>
-                <Button
-                  bg={'blue.400'}
-                  color={'white'}
-                  _hover={{
-                    bg: 'blue.500',
-                  }}>
-                  Get magic link 🪄
-                </Button>
-              </Stack>
+
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  setEmailSent(true);
+                  console.log('[magic link] would have sent link to: ', email);
+                }}
+              >
+                <Stack spacing={8}>
+                  <FormControl id="email">
+                    <FormLabel>Email</FormLabel>
+                    <Input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                  </FormControl>
+                  <Button
+                    bg={'blue.400'}
+                    color={'white'}
+                    _hover={{
+                      bg: 'blue.500',
+                    }}
+                    type={'submit'}
+                    disabled={emailSent}
+                  >
+                    {
+                      emailSent ?
+                        `✨ Sent magic link to ${email} ✨` :
+                        'Get magic link 🪄'
+                    }
+                  </Button>
+                </Stack>
+              </form>
+
             </Box>
           </Stack>
         </Flex>
