@@ -28,7 +28,7 @@ const Home: NextPage = () => {
 
       <Container maxW='' centerContent={true}>
         <Heading as='h3' size='lg'>
-          Login
+          Welcome
         </Heading>
 
         <Flex
