@@ -1,4 +1,4 @@
-import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendSignInLinkToEmail } from "firebase/auth";
 import app from "./firebase";
 
 const auth = getAuth(app);
@@ -35,6 +35,16 @@ const sendSignInLinkToMerchantEmail = async (email: string) => {
   }
 }
 
+const createMerchantAuth = async (email: string, pw: string) => {
+  try {
+    await createUserWithEmailAndPassword(auth, email, pw);
+    console.log('[auth] successfully created user with email and password: ', email);
+  } catch (error) {
+    console.error('[auth] failed to create user with email and password', error);
+  }
+}
+
 export {
-  sendSignInLinkToMerchantEmail
+  sendSignInLinkToMerchantEmail,
+  createMerchantAuth,
 }
