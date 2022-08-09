@@ -1,11 +1,11 @@
-import { Box, Button, Container, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
+import { Container, Heading} from "@chakra-ui/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { sendSignInLinkToMerchantEmail } from "../state/auth";
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
 
   return (
@@ -17,58 +17,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container maxW='' centerContent={true}>
-        <Heading as='h3' size='lg'>
-          Welcome
-        </Heading>
-
-        <Flex
-          // minH={'100vh'}
-          align={'center'}
-          justify={'center'}
-          // bg={useColorModeValue('gray.50', 'gray.800')}
-        >
-          <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-            <Box
-              rounded={'lg'}
-              bg={useColorModeValue('white', 'gray.700')}
-              boxShadow={'lg'}
-              p={8}>
-
-              <form
-                onSubmit={async (event) => {
-                  event.preventDefault();
-                  sendSignInLinkToMerchantEmail(email).then(() => {
-                    setEmailSent(true);
-                  });
-                }}
-              >
-                <Stack spacing={8}>
-                  <FormControl id="email">
-                    <FormLabel>Email</FormLabel>
-                    <Input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                  </FormControl>
-                  <Button
-                    bg={'blue.400'}
-                    color={'white'}
-                    _hover={{
-                      bg: 'blue.500',
-                    }}
-                    type={'submit'}
-                    disabled={emailSent}
-                  >
-                    {
-                      emailSent ?
-                        `✨ Sent magic link to ${email} ✨` :
-                        'Get magic link 🪄'
-                    }
-                  </Button>
-                </Stack>
-              </form>
-
-            </Box>
-          </Stack>
-        </Flex>
+      <Container centerContent={true}>
+        <Heading>Landing page</Heading>
       </Container>
     </>
   );
