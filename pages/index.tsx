@@ -2,6 +2,7 @@ import { Box, Button, Container, Flex, FormControl, FormHelperText, FormLabel, H
 import { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import { sendSignInLinkToMerchantEmail } from "../state/auth";
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState<string>('');
@@ -35,10 +36,11 @@ const Home: NextPage = () => {
               p={8}>
 
               <form
-                onSubmit={(event) => {
+                onSubmit={async (event) => {
                   event.preventDefault();
-                  setEmailSent(true);
-                  console.log('[magic link] would have sent link to: ', email);
+                  sendSignInLinkToMerchantEmail(email).then(() => {
+                    setEmailSent(true);
+                  });
                 }}
               >
                 <Stack spacing={8}>
