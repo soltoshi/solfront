@@ -6,14 +6,21 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PaymentLinkCard from "../../components/PaymentLinkCard";
 import { usePayContext } from "../../context/PayContext";
-import { getPaymentLink, getPaymentLinkBySlug } from "../../state/paymentLink";
+import { getPaymentLinkBySlug } from "../../state/paymentLink";
+
+interface PaymentLinkData {
+  link?: string;
+  productName?: string;
+  productCurrency?: string;
+  productPrice?: number;
+}
 
 const Pay: NextPage = () => {
   const router = useRouter();
   const { paymentLinkId } = router.query;
 
   // state that renders
-  const [data, setData] = useState({});
+  const [data, setData] = useState<PaymentLinkData>({});
   const {price, setPrice, setPaymentLink, setProduct} = usePayContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -31,13 +38,14 @@ const Pay: NextPage = () => {
 
     setIsLoading(false);
     console.log(`[pay] loaded payment link ${slug}:`, JSON.stringify(dataArray[0]));
-    const data = dataArray[0];
+    const data = dataArray[0] as PaymentLinkData;
 
     // set data for the context provider
     setPrice(data.productPrice);
-    setPaymentLink(paymentLinkId);
+    setPaymentLink(paymentLinkId as string);
     setProduct(data.productName);
-  }
+  };
+
   useEffect(() => {
     if (!paymentLinkId) {
       return;
@@ -45,8 +53,6 @@ const Pay: NextPage = () => {
     setIsLoading(true);
     loadPaymentLink(paymentLinkId);
   }, [paymentLinkId]);
-
-  const apiParams = {};
 
   return (
     <>
