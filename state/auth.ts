@@ -6,7 +6,7 @@ const auth = getAuth(app);
 const actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be in the authorized domains list in the Firebase Console.
-  url: 'https://solfront.app',
+  url: 'http://localhost:3000/magic_link',
   // This must be true.
   handleCodeInApp: true,
   iOS: {
@@ -17,12 +17,12 @@ const actionCodeSettings = {
     installApp: true,
     minimumVersion: '12'
   },
-  // dynamicLinkDomain: 'solfront.app',
+  dynamicLinkDomain: 'solfront.page.link',
 };
 
 const sendSignInLinkToMerchantEmail = async (email: string) => {
   console.log('[auth] action url is: ', actionCodeSettings.url);
-  // console.log('[auth] dynamic link domain is: ', actionCodeSettings.dynamicLinkDomain);
+  console.log('[auth] dynamic link domain is: ', actionCodeSettings.dynamicLinkDomain);
   try {
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);
     // The link was successfully sent. Inform the user.
