@@ -1,10 +1,16 @@
-import { Heading, VStack } from "@chakra-ui/react";
+import { Box, Heading, Spinner, VStack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { getAdditionalUserInfo, getAuth, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import app from "../state/firebase";
+import router from "next/router";
+import { getMerchantByAuthUserId } from "../state/merchant";
 
 const MagicLink: NextPage = () => {
+
+  const [isNewUser, setIsNewUser] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Confirm the link is a sign-in with email link.
@@ -24,7 +30,7 @@ const MagicLink: NextPage = () => {
       }
       // The client SDK will parse the code from the link for you.
       signInWithEmailLink(auth, email, window.location.href)
-        .then((result) => {
+        .then(async (result) => {
           // Clear email from storage.
           window.localStorage.removeItem('emailForSignIn');
           // You can access the new user via result.user
@@ -32,11 +38,22 @@ const MagicLink: NextPage = () => {
           // result.additionalUserInfo.profile == null
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
+          setEmail(email);
+          // setIsNewUser(getAdditionalUserInfo(result).isNewUser);
+          setIsLoading(false);
           console.log('[magic_link] successfully signed in with email link', {
             email,
-            isNewUser: getAdditionalUserInfo(result).isNewUser,
+            isNewUser: isNewUser,
           });
 
+          const existingMerchant = await (await getMerchantByAuthUserId({authUserId: result.user.uid})).length > 0;
+          // TODO: set values on an auth provider of sorts so that
+          // create_merchant has user ID to map to a merchant
+          if (!existingMerchant) {
+            router.push('/create_merchant');
+          } else {
+            router.push('/dashboard')
+          }
         })
         .catch((error) => {
           // Some error occurred, you can inspect the code: error.code
@@ -44,14 +61,20 @@ const MagicLink: NextPage = () => {
           console.error('[magic_link] error doing magic link auth', error);
         });
     }
-  })
+  }, [email])
 
   return (
     <>
       <VStack>
-        <Heading fontSize={'2xl'}>
-          Logging in with magic link
-        </Heading>
+        {
+          isLoading ?
+           <Box width="100%" display="flex" justifyContent="center" marginTop={'48px!'}>
+            <Spinner/>
+           </Box> :
+           <Heading fontSize={'2xl'}>
+            Welcome {email}!
+          </Heading>
+        }
       </VStack>
     </>
   )

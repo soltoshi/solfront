@@ -1,4 +1,4 @@
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, collection, getDocs, query, where } from "firebase/firestore";
 import db from "./database";
 import generateDocumentId from "./util/generateDocumentId";
 
@@ -25,6 +25,21 @@ const createMerchant = async ({name, email, bankAccountNumber}: CreateMerchantPa
   }
 }
 
+const getMerchantByAuthUserId = async ({authUserId}) => {
+  try {
+    const q = query(collection(db, COLLECTION_NAME), where("auth_user_id", "==", authUserId));
+    console.log(`finding merchant with auth user id ${authUserId}`);
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((docSnapshot) => {
+      return docSnapshot.data();
+    });
+  } catch (e) {
+    console.error(`Error fetching merchant with auth user id ${authUserId}: `, e)
+  }
+}
+
 export {
   createMerchant,
+  getMerchantByAuthUserId,
 };
