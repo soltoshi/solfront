@@ -18,12 +18,14 @@ const CreateMerchant: NextPage = () => {
     initialValues: {
       name: '',
       email: '',
+      bankAccountNumber: '',
     },
     onSubmit: (values) => {
       // TODO: handle form validation
       createMerchant({
         name: values.name,
         email: values.email,
+        bankAccountNumber: values.bankAccountNumber,
       });
 
       alert(JSON.stringify(values, null, 2));
@@ -67,6 +69,18 @@ const CreateMerchant: NextPage = () => {
                   value={formik.values.email}
                 />
                 <FormHelperText>Your business email address</FormHelperText>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Bank account number</FormLabel>
+                <Input
+                  type='email'
+                  id='bank_account_number'
+                  name='bank_account_number'
+                  onChange={formik.handleChange}
+                  value={formik.values.bankAccountNumber}
+                />
+                <FormHelperText>Bank account to send USD to</FormHelperText>
               </FormControl>
             </VStack>
 
