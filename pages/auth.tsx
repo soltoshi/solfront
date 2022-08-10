@@ -66,7 +66,9 @@ const Home: NextPage = () => {
 
             </Box>
 
-            <Box
+            {/* This is the email + pw login component */}
+
+            {/* <Box
               rounded={'lg'}
               bg={useColorModeValue('white', 'gray.700')}
               boxShadow={'lg'}
@@ -108,7 +110,7 @@ const Home: NextPage = () => {
                 </Stack>
               </form>
 
-            </Box>
+            </Box> */}
           </Stack>
         </Flex>
       </Container>
