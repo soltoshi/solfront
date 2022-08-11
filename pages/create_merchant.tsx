@@ -12,8 +12,11 @@ import {
 import { NextPage } from "next";
 import { useFormik } from "formik";
 import { createMerchant } from "../state/merchant";
+import { useAuthContext } from "../context/AuthContext";
 
 const CreateMerchant: NextPage = () => {
+  const {authUid} = useAuthContext();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -26,6 +29,7 @@ const CreateMerchant: NextPage = () => {
         name: values.name,
         email: values.email,
         bankAccountNumber: values.bankAccountNumber,
+        authUid: authUid,
       });
 
       alert(JSON.stringify(values, null, 2));
