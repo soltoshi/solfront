@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import app from "../state/firebase";
 import router from "next/router";
 import { getMerchantByAuthUserId } from "../state/merchant";
+import { useAuthContext } from "../context/AuthContext";
 
 const MagicLink: NextPage = () => {
 
@@ -12,11 +13,12 @@ const MagicLink: NextPage = () => {
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const {setAuthUid} = useAuthContext();
+
   useEffect(() => {
     // Confirm the link is a sign-in with email link.
     const auth = getAuth(app);
-    console.log("[magic_link] window location", window.location.href);
-    if (isSignInWithEmailLink(auth, window.location.href)) {
+    if (isSignInWithEmailLink(auth, window.location.href) && isLoading) {
       // Additional state parameters can also be passed via URL.
       // This can be used to continue the user's intended action before triggering
       // the sign-in operation.
@@ -30,7 +32,7 @@ const MagicLink: NextPage = () => {
       }
       // The client SDK will parse the code from the link for you.
       signInWithEmailLink(auth, email, window.location.href)
-        .then(async (result) => {
+        .then((result) => {
           // Clear email from storage.
           window.localStorage.removeItem('emailForSignIn');
           // You can access the new user via result.user
@@ -39,17 +41,19 @@ const MagicLink: NextPage = () => {
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
           setEmail(email);
-          // setIsNewUser(getAdditionalUserInfo(result).isNewUser);
+          const isNewUser = getAdditionalUserInfo(result).isNewUser;
+          setIsNewUser(isNewUser);
           setIsLoading(false);
           console.log('[magic_link] successfully signed in with email link', {
             email,
             isNewUser: isNewUser,
           });
 
-          const existingMerchant = await (await getMerchantByAuthUserId({authUserId: result.user.uid})).length > 0;
+          setAuthUid(result.user.uid);
+
           // TODO: set values on an auth provider of sorts so that
           // create_merchant has user ID to map to a merchant
-          if (!existingMerchant) {
+          if (isNewUser) {
             router.push('/create_merchant');
           } else {
             router.push('/dashboard')
