@@ -3,26 +3,31 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import PaymentLinkCard from "../components/PaymentLinkCard";
+import { useAuthContext } from "../context/AuthContext";
 import { getPaymentLinks } from "../state/paymentLink";
 
 const Dashboard: NextPage = () => {
   const [paymentLinks, setPaymentLinks] = useState([]);
-
-  const loadPaymentLinks = async () => {
-    const data = await getPaymentLinks();
-    setPaymentLinks(data);
-  };
+  const {merchantId} = useAuthContext();
 
   useEffect(() => {
+    const loadPaymentLinks = async () => {
+      const data = await getPaymentLinks({merchant: merchantId});
+      setPaymentLinks(data);
+    };
     loadPaymentLinks();
-  }, []);
+  }, [merchantId]);
 
   return (
     <>
       <Head>
-        <title>Solfront</title> <meta name="description" content="Solfront
-        enables your business to effortlessly create payment links, accept
-        cryptocurrency for USD, and incentivize your customers to come back." />
+        <title>Solfront</title>
+        <meta
+          name="description"
+          content="Solfront enables your business to effortlessly create payment
+          links, accept cryptocurrency for USD, and incentivize your customers
+          to come back."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
