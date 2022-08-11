@@ -1,19 +1,18 @@
-import { Box, Heading, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Spinner, VStack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { getAdditionalUserInfo, getAuth, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { useEffect, useState } from "react";
 import app from "../state/firebase";
-import router from "next/router";
-import { getMerchantByAuthUserId } from "../state/merchant";
+import { useRouter } from "next/router";
 import { useAuthContext } from "../context/AuthContext";
 
 const MagicLink: NextPage = () => {
 
-  const [isNewUser, setIsNewUser] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const {setAuthUid} = useAuthContext();
+
+  const router = useRouter();
 
   useEffect(() => {
     // Confirm the link is a sign-in with email link.
@@ -40,10 +39,7 @@ const MagicLink: NextPage = () => {
           // result.additionalUserInfo.profile == null
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
-          setEmail(email);
           const isNewUser = getAdditionalUserInfo(result).isNewUser;
-          setIsNewUser(isNewUser);
-          setIsLoading(false);
           console.log('[magic_link] successfully signed in with email link', {
             email,
             isNewUser: isNewUser,
@@ -51,13 +47,10 @@ const MagicLink: NextPage = () => {
 
           setAuthUid(result.user.uid);
 
-          // TODO: set values on an auth provider of sorts so that
-          // create_merchant has user ID to map to a merchant
-          if (isNewUser) {
-            router.push('/create_merchant');
-          } else {
-            router.push('/dashboard')
-          }
+          const nextPage = isNewUser ? '/create_merchant' : '/dashboard';
+          router.push(nextPage);
+
+          setIsLoading(false);
         })
         .catch((error) => {
           // Some error occurred, you can inspect the code: error.code
@@ -65,19 +58,16 @@ const MagicLink: NextPage = () => {
           console.error('[magic_link] error doing magic link auth', error);
         });
     }
-  }, [email])
+  }, [])
 
   return (
     <>
       <VStack>
         {
           isLoading ?
-           <Box width="100%" display="flex" justifyContent="center" marginTop={'48px!'}>
-            <Spinner/>
-           </Box> :
-           <Heading fontSize={'2xl'}>
-            Welcome {email}!
-          </Heading>
+            <Box width="100%" display="flex" justifyContent="center" marginTop={'48px!'}>
+              <Spinner/>
+            </Box> : <></>
         }
       </VStack>
     </>
