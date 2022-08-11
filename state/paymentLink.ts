@@ -40,16 +40,6 @@ const createPaymentLink = async ({
   }
 }
 
-const getPaymentLink = async({linkId}: GetPaymentLinkParams) => {
-  try {
-    const docRef = doc(db, COLLECTION_NAME, linkId);
-    const docSnap = await getDoc(docRef);
-    return docSnap.data();
-  } catch (e) {
-    console.error(`Error loading ${linkId}: `, e);
-  }
-}
-
 const getPaymentLinkBySlug = async ({slug}) => {
   const linkWithSlug = `${PAYMENT_LINK_DOMAIN}/${slug}`;
   try {
@@ -65,9 +55,12 @@ const getPaymentLinkBySlug = async ({slug}) => {
   }
 }
 
-const getPaymentLinks = async() => {
+const getPaymentLinks = async({merchant}) => {
   try {
-    const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+    const q = query(collection(db, COLLECTION_NAME), where("merchant", "==", merchant))
+    console.log(`loading payment links for merchant: ${merchant}`);
+
+    const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((docSnapshot) => {
       return docSnapshot.data();
     });
@@ -78,7 +71,6 @@ const getPaymentLinks = async() => {
 
 export {
   createPaymentLink,
-  getPaymentLink,
   getPaymentLinks,
   getPaymentLinkBySlug,
 };
