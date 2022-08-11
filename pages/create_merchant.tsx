@@ -78,9 +78,9 @@ const CreateMerchant: NextPage = () => {
               <FormControl>
                 <FormLabel>Bank account number</FormLabel>
                 <Input
-                  type='email'
+                  type='text'
                   id='bank_account_number'
-                  name='bank_account_number'
+                  name='bankAccountNumber'
                   onChange={formik.handleChange}
                   value={formik.values.bankAccountNumber}
                 />
