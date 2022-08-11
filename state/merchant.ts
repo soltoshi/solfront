@@ -15,6 +15,10 @@ interface CreateMerchantParams {
 
 const createMerchant = async ({name, email, bankAccountNumber, authUid}: CreateMerchantParams) => {
   try {
+    if (authUid.length == 0) {
+      throw new Error('Tried to create merchant without authUid');
+    }
+
     const generatedId = generateDocumentId(COLLECTION_PREFIX);
     await setDoc(doc(db, COLLECTION_NAME, generatedId), {
       name,
