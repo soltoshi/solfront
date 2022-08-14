@@ -4,10 +4,6 @@ import Head from "next/head";
 import { useState } from "react";
 
 const Home: NextPage = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [emailSent, setEmailSent] = useState<boolean>(false);
-
   return (
     <>
       <Head>
