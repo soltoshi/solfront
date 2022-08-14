@@ -1,7 +1,10 @@
 import Head from "next/head";
 
 import {
+  Box,
    Button,
+   Checkbox,
+   CheckboxGroup,
    FormControl,
    FormHelperText,
    FormLabel,
@@ -13,16 +16,29 @@ import {
    NumberInputField,
    NumberInputStepper,
    Select,
+   Stack,
    VStack
 } from "@chakra-ui/react";
-import { NextPage } from "next";
 import { useFormik } from "formik";
 import { createPaymentLink } from "../state/paymentLink";
-import { TODO_MERCHANT } from "../state/constants";
+import { NextPageWithLayout } from "./_app";
+import renderWithMerchantLayout from "../components/MerchantLayout";
+import { useAuthContext } from "../context/AuthContext";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 const DEFAULT_PRICE_VALUE = 10.00
 
-const CreateLink: NextPage = () => {
+const CreateLink: NextPageWithLayout = () => {
+  const {merchantId} = useAuthContext();
+  const [collectDetails, setCollectDetails] = useState({
+    email: false,
+    phone: false,
+    shippingAddress: false,
+  });
+
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       product: '',
@@ -32,13 +48,14 @@ const CreateLink: NextPage = () => {
     onSubmit: (values) => {
       // TODO: handle form validation
       createPaymentLink({
-        merchant: TODO_MERCHANT,
+        merchant: merchantId,
         productCurrency: values.priceCurrency,
         productName: values.product,
         productPrice: values.price,
+        // we get this state from a different hook
+        collectDetails: collectDetails,
       });
-
-      alert(JSON.stringify(values, null, 2));
+      router.push('/dashboard');
     },
   });
 
@@ -50,9 +67,19 @@ const CreateLink: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <Box
+        bgColor={'whiteAlpha.900'}
+        boxShadow={'lg'}
+        padding={'4rem 2rem'}
+        width={'50vh'}
+        rounded={'xl'}
+        marginTop={8}
+      >
         <VStack>
-          <Heading as='h3' size='lg' marginBottom='32px'>
+          <Heading as='h3' size='lg' marginBottom='32px'
+            bgGradient={'linear(to-l, teal.400, teal.500)'}
+            bgClip={'text'}
+          >
             Create a payment link
           </Heading>
           <form onSubmit={formik.handleSubmit}>
@@ -65,6 +92,9 @@ const CreateLink: NextPage = () => {
                   name='product'
                   onChange={formik.handleChange}
                   value={formik.values.product}
+                  bgColor={'white'}
+                  boxShadow={'base'}
+                  border={'hidden'}
                 />
                 <FormHelperText>Your product's name</FormHelperText>
               </FormControl>
@@ -77,6 +107,9 @@ const CreateLink: NextPage = () => {
                   name="priceCurrency"
                   onChange={formik.handleChange}
                   value={formik.values.priceCurrency}
+                  bgColor={'white'}
+                  boxShadow={'base'}
+                  border={'hidden'}
                 >
                   <option value='USD'>USD</option>
                   <option value='SOL'>SOL</option>
@@ -94,27 +127,62 @@ const CreateLink: NextPage = () => {
                     name="price"
                     onChange={formik.handleChange}
                     value={formik.values.price}
+                    bgColor={'white'}
+                    boxShadow={'base'}
+                    border={'hidden'}
                   />
                   <NumberInputStepper>
-                    <NumberIncrementStepper />
+                    <NumberIncrementStepper  />
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
+                <FormHelperText>Price to charge</FormHelperText>
               </FormControl>
             </VStack>
 
+            <FormControl marginTop={'16px'}>
+              <FormLabel>Collect details</FormLabel>
+              <CheckboxGroup colorScheme='gray' defaultValue={[]}>
+                <Stack spacing={[1, 5]} direction={['column', 'row']}>
+                  <Checkbox onChange={() => {
+                    setCollectDetails({...collectDetails, ...{email: !collectDetails.email}});
+                    console.log(collectDetails);
+
+                  }}>Email</Checkbox>
+                  <Checkbox onChange={() => {
+                    setCollectDetails({...collectDetails, ...{phone: !collectDetails.phone}});
+                    console.log(collectDetails);
+                  }}>Phone number</Checkbox>
+                  <Checkbox onChange={() => {
+                    setCollectDetails({...collectDetails, ...{shippingAddress: !collectDetails.shippingAddress}});
+                    console.log(collectDetails);
+                  }}>Shipping address</Checkbox>
+                </Stack>
+              </CheckboxGroup>
+              <FormHelperText>Information to collect from your customer</FormHelperText>
+            </FormControl>
+
             <Button
-              // TODO: figure out why this margin gets overridden
               marginTop={50}
               type="submit"
+              width={'100%'}
+              _hover={{
+                bgGradient: 'linear(to-l, teal.400, teal.500)',
+                textColor: 'white',
+                bgClip: 'border-box'
+              }}
+              bgGradient={'linear(to-l, teal.500, teal.400)'}
+              textColor={'white'}
             >
               Create payment link
             </Button>
           </form>
         </VStack>
-      </main>
+      </Box>
     </div>
   );
 }
+
+CreateLink.getLayout = renderWithMerchantLayout;
 
 export default CreateLink;

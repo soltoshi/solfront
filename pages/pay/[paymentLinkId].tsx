@@ -1,31 +1,40 @@
-import { Box, Button, Heading, Spinner, VStack } from "@chakra-ui/react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { NextPage } from "next";
+import { Box, Button, Center, FormControl, FormLabel, Heading, HStack, Input, Spinner, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import PayLayout from "../../components/PayLayout";
 import PaymentLinkCard from "../../components/PaymentLinkCard";
+import ShippingAddressForm from "../../components/ShippingAddressForm";
 import { usePayContext } from "../../context/PayContext";
 import { getPaymentLinkBySlug } from "../../state/paymentLink";
+import { NextPageWithLayout } from "../_app";
 
 interface PaymentLinkData {
   link?: string;
   productName?: string;
   productCurrency?: string;
   productPrice?: number;
+  collectDetails?: {
+    email: boolean;
+    phone: boolean;
+    shippingAddress: boolean;
+  };
 }
 
-const Pay: NextPage = () => {
+const Pay: NextPageWithLayout = () => {
   const router = useRouter();
   const { paymentLinkId: paymentLinkSlug } = router.query;
 
   // state that renders
   const [data, setData] = useState<PaymentLinkData>({});
-  const {price, setPrice, setPaymentLink, setProduct, setPaymentLinkSlug} = usePayContext();
+  const {price, setPrice, setPaymentLink, setProduct, setPaymentLinkSlug, setPayProgress} = usePayContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // public key of a connected wallet, if there is one
-  const {publicKey} = useWallet();
+  // state for collection details
+  const {email, setEmail, phone, setPhone, setShippingAddress} = usePayContext();
+
+  useEffect(() => {
+    setPayProgress(33)
+  }, [setPayProgress]);
 
   // Read the payment link details
   useEffect(() => {
@@ -63,45 +72,112 @@ const Pay: NextPage = () => {
   return (
     <>
       <VStack>
-        <Heading fontSize={'2xl'}>
+        {/* <Heading fontSize={'2xl'}>
           💸 Pay
-        </Heading>
-
-        <Box marginTop={'48px!'}>
-          <WalletMultiButton />
-        </Box>
+        </Heading> */}
 
         {
           isLoading ?
            <Box width="100%" display="flex" justifyContent="center" marginTop={'48px!'}>
             <Spinner/>
            </Box> :
-           <PaymentLinkCard
-             link={data.link}
-             productName={data.productName}
-             price={price.toString()}
-             currency={data.productCurrency}
 
-             offset={true}
-           />
+          <Center h={'100%'}>
+            <HStack spacing={24}>
+              <Box>
+                <PaymentLinkCard
+                  link={data.link}
+                  productName={data.productName}
+                  price={price.toString()}
+                  currency={data.productCurrency}
+
+                  offset={true}
+                />
+              </Box>
+
+              {/* Render inputs for collecting customer details START */}
+              <VStack spacing={12} maxWidth={1024}>
+                {
+                  data.collectDetails?.email &&
+                  <FormControl>
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                      type={'email'}
+                      placeholder="Your email"
+                      id='email'
+                      name='email'
+                      onChange={(event) => {
+                        event.preventDefault();
+                        setEmail(event.target.value);
+                      }}
+                      value={email}
+                      bgColor={'white'}
+                      boxShadow={'base'}
+                      border={'hidden'}
+                    />
+                  </FormControl>
+                }
+
+                {
+                  data.collectDetails?.phone &&
+                  <FormControl>
+                    <FormLabel>Phone number</FormLabel>
+                    <Input
+                      type={'text'}
+                      placeholder="Your phone number"
+                      id='phone'
+                      name='phone'
+                      onChange={(event) => {
+                        event.preventDefault();
+                        setPhone(event.target.value);
+                      }}
+                      value={phone}
+                      bgColor={'white'}
+                      boxShadow={'base'}
+                      border={'hidden'}
+                    />
+                  </FormControl>
+                }
+
+                {
+                  data.collectDetails?.shippingAddress &&
+                  <ShippingAddressForm
+                    onChange={(values) => {
+                      console.log('setting shipping address', JSON.stringify(values));
+                      setShippingAddress(values);
+                    }}
+                  />
+                }
+                <Button
+                  marginTop={'48px!'}
+                  size={'lg'}
+                  colorScheme={'green'}
+                  width={'100%'}
+                  onClick={() => {
+                    // submit any details to the pay context
+                    router.push(`/checkout`);
+                  }}
+                >
+                  Checkout
+                </Button>
+              </VStack>
+              {/* Render inputs for collecting customer details END */}
+            </HStack>
+          </Center>
         }
 
-        <Button
-          marginTop={'48px!'}
-          size={'lg'}
-          colorScheme={'green'}
-          width={'25%'}
 
-          disabled={publicKey === null}
-          onClick={() => {
-            router.push(`/checkout`);
-          }}
-        >
-          🛍 Checkout
-        </Button>
       </VStack>
     </>
   )
+}
+
+Pay.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <PayLayout>
+      {page}
+    </PayLayout>
+  );
 }
 
 export default Pay;

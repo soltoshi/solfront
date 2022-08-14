@@ -5,11 +5,7 @@ import { clusterApiUrl, Connection, PublicKey, Transaction, SystemProgram, LAMPO
 import { NextApiRequest, NextApiResponse } from "next"
 import { shopAddress } from "../../lib/addresses"
 import BigNumber from "bignumber.js";
-
-const SOLANA_CLUSTER_NAME: PythCluster = 'devnet';
-const SOL_USD_PYTH_SYMBOL = 'Crypto.SOL/USD';
-const pythConnection = new Connection(getPythClusterApiUrl(SOLANA_CLUSTER_NAME));
-const pythPublicKey = getPythProgramKeyForCluster(SOLANA_CLUSTER_NAME);
+import Pyth from "../../state/pyth"
 
 export type MakeTransactionInputData = {
   account: string,
@@ -71,14 +67,9 @@ export default async function handler(
     });
 
     // Get the current SOL/USD price from Pyth
-    const pythData = await new PythHttpClient(pythConnection, pythPublicKey).getData();
-    const solUsdPrice = pythData.productPrice.get(SOL_USD_PYTH_SYMBOL).price;
-    const priceStatus = PriceStatus[pythData.productPrice.get(SOL_USD_PYTH_SYMBOL).status];
-    console.log('[make_transaction] got data from Pyth', {solUsdPrice, priceStatus});
+    const solUsdPrice = await Pyth.getSolUsdPrice();
 
     // Create the instruction to send SOL from the buyer to the shop
-
-    // SOL price = product price / SOLUSD price
     const priceInSol = price / solUsdPrice;
     const transferInstruction = SystemProgram.transfer({
       lamports: Math.round(priceInSol * LAMPORTS_PER_SOL),

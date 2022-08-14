@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import app from "../state/firebase";
 import { useRouter } from "next/router";
 import { useAuthContext } from "../context/AuthContext";
+import { NextPageWithLayout } from "./_app";
+import renderWithMerchantLayout from "../components/MerchantLayout";
 
-const MagicLink: NextPage = () => {
+const MagicLink: NextPageWithLayout = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -46,6 +48,9 @@ const MagicLink: NextPage = () => {
           });
 
           setAuthUid(result.user.uid);
+          // We use this as a pseudo cookie so that the "login" state is
+          // persisted across reloads, etc
+          window.localStorage.setItem('solfrontAuthUid', result.user.uid);
 
           const nextPage = isNewUser ? '/create_merchant' : '/dashboard';
           router.push(nextPage);
@@ -73,5 +78,7 @@ const MagicLink: NextPage = () => {
     </>
   )
 }
+
+MagicLink.getLayout = renderWithMerchantLayout;
 
 export default MagicLink;
