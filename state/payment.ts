@@ -75,7 +75,7 @@ const getPayments = async({merchant, paymentLink}) => {
       filters.push(where("payment_link", "==", paymentLink));
     }
     const q = query(collection(db, COLLECTION_NAME), ...filters);
-    console.log(`loading payments for merchant: ${merchant}`);
+    console.log(`loading payments for:`, {merchant, paymentLink});
 
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((docSnapshot) => {
