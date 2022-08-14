@@ -22,6 +22,15 @@ export const AuthContextProvider: FC<{children: ReactNode}> = ({ children }) => 
         return merchantId;
       }
 
+      // See if we already have an authUid
+      if (!authUid) {
+        // It's possible that it's stored in the browser from a previous auth
+        // session
+        const maybeAuthUid = localStorage.getItem("solfrontAuthUid");
+        console.log("[auth] checking if auth is in local storage, found:", maybeAuthUid);
+        setAuthUid(maybeAuthUid);
+      }
+
       const merchants = await getMerchantByAuthUserId({authUserId: authUid});
       if (merchants.length == 0) {
         return null;

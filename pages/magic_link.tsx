@@ -48,6 +48,9 @@ const MagicLink: NextPageWithLayout = () => {
           });
 
           setAuthUid(result.user.uid);
+          // We use this as a pseudo cookie so that the "login" state is
+          // persisted across reloads, etc
+          window.localStorage.setItem('solfrontAuthUid', result.user.uid);
 
           const nextPage = isNewUser ? '/create_merchant' : '/dashboard';
           router.push(nextPage);
