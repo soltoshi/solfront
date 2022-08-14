@@ -12,7 +12,7 @@ interface IPayContext {
   setPaymentLink?: (paymentLink: string) => void,
 
   paymentLinkSlug?: string,
-  setPaymentLinkSlug?: (paymentLink: string) => void,
+  setPaymentLinkSlug?: (paymentLinkSlug: string) => void,
 
   product?: string,
   setProduct?: (product: string) => void,
@@ -25,6 +25,7 @@ const PayContext = createContext<IPayContext>({});
 export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
   const [price, setPrice] = useState<number>(0);
   const [paymentLink, setPaymentLink] = useState<string>(null);
+  const [paymentLinkSlug, setPaymentLinkSlug] = useState<string>(null);
   const [product, setProduct] = useState<string>(null);
   const [txId, setTxId] = useState<string>('');
 
@@ -53,8 +54,10 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
       value={{
         price,
         paymentLink,
+        paymentLinkSlug,
         setPrice,
         setPaymentLink,
+        setPaymentLinkSlug,
         product,
         setProduct,
         setTxIdAndCreatePayment,
