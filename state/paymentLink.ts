@@ -53,8 +53,8 @@ const loadPaymentLink = async ({linkId}: GetPaymentLinkParams) => {
 const getPaymentLinkBySlug = async ({slug}) => {
   const linkWithSlug = `${PAYMENT_LINK_DOMAIN}/${slug}`;
   try {
-    const q = query(collection(db, COLLECTION_NAME), where("link", "==", linkWithSlug));
     console.log(`finding link with slug ${linkWithSlug}`);
+    const q = query(collection(db, COLLECTION_NAME), where("link", "==", linkWithSlug));
 
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((docSnapshot) => {
