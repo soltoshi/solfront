@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { usePayContext } from "../context/PayContext";
 
 const Confirmed: NextPage = () => {
-  const {paymentLink} = usePayContext();
+  const {paymentLinkSlug} = usePayContext();
 
   return (
     <>
@@ -17,7 +17,7 @@ const Confirmed: NextPage = () => {
           textDecoration={'underline'}
         >
           <Link
-            href={`/pay/${paymentLink}`}
+            href={`/pay/${paymentLinkSlug}`}
           >
             🔙 Go back to pay page
           </Link>

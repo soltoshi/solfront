@@ -58,7 +58,7 @@ const getPaymentLinkBySlug = async ({slug}) => {
 
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((docSnapshot) => {
-      return docSnapshot.data();
+      return docSnapshot;
     });
   } catch (e) {
     console.error(`Error fetching payment link for ${linkWithSlug}: `, e)

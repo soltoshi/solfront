@@ -11,6 +11,9 @@ interface IPayContext {
   paymentLink?: string,
   setPaymentLink?: (paymentLink: string) => void,
 
+  paymentLinkSlug?: string,
+  setPaymentLinkSlug?: (paymentLink: string) => void,
+
   product?: string,
   setProduct?: (product: string) => void,
 

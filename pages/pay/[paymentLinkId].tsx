@@ -21,7 +21,7 @@ const Pay: NextPage = () => {
 
   // state that renders
   const [data, setData] = useState<PaymentLinkData>({});
-  const {price, setPrice, setPaymentLink, setProduct} = usePayContext();
+  const {price, setPrice, setPaymentLink, setProduct, setPaymentLinkSlug} = usePayContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // public key of a connected wallet, if there is one
@@ -35,7 +35,7 @@ const Pay: NextPage = () => {
       router.push('/404');
     }
     const paymentLink = dataArray[0];
-    setData(paymentLink);
+    setData(paymentLink.data());
 
     setIsLoading(false);
     console.log(`[pay] loaded payment link ${slug}:`, JSON.stringify(dataArray[0]));
@@ -43,7 +43,8 @@ const Pay: NextPage = () => {
 
     // set data for the context provider
     setPrice(data.productPrice);
-    setPaymentLink(paymentLinkSlug as string);
+    setPaymentLink(paymentLink.id as string);
+    setPaymentLinkSlug(paymentLinkSlug as string);
     setProduct(data.productName);
   };
 
