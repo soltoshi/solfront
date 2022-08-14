@@ -6,7 +6,7 @@ import generateDocumentId from "./util/generateDocumentId";
 const COLLECTION_NAME = 'payments';
 const COLLECTION_PREFIX = 'pymt';
 
-interface CreatePaymentParams {
+type CreatePaymentParams = {
   merchant: string;
   paymentLink: string;
   created: number;
@@ -75,3 +75,5 @@ export {
   createPayment,
   getPayments,
 };
+
+export default CreatePaymentParams;
