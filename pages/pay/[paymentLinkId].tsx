@@ -17,7 +17,7 @@ interface PaymentLinkData {
 
 const Pay: NextPage = () => {
   const router = useRouter();
-  const { paymentLinkSlug } = router.query;
+  const { paymentLinkId: paymentLinkSlug } = router.query;
 
   // state that renders
   const [data, setData] = useState<PaymentLinkData>({});
@@ -28,32 +28,37 @@ const Pay: NextPage = () => {
   const {publicKey} = useWallet();
 
   // Read the payment link details
-  const loadPaymentLink = async (slug) => {
-    const dataArray = await getPaymentLinkBySlug({slug});
-    if (dataArray.length == 0) {
-      console.error('[pay] no record of payment link with slug', slug);
-      router.push('/404');
-    }
-    const paymentLink = dataArray[0];
-    setData(paymentLink.data());
-
-    setIsLoading(false);
-    console.log(`[pay] loaded payment link ${slug}:`, JSON.stringify(dataArray[0]));
-    const data = dataArray[0] as PaymentLinkData;
-
-    // set data for the context provider
-    setPrice(data.productPrice);
-    setPaymentLink(paymentLink.id as string);
-    setPaymentLinkSlug(paymentLinkSlug as string);
-    setProduct(data.productName);
-  };
-
   useEffect(() => {
+    const getPaymentLinkData = async (slug) => {
+      const dataArray = await getPaymentLinkBySlug({slug});
+      if (dataArray.length == 0) {
+        console.error('[pay] no record of payment link with slug', slug);
+        router.push('/404');
+      }
+      const paymentLink = dataArray[0];
+      const data = paymentLink.data() as PaymentLinkData;
+
+      console.log('loaded payment link with data', JSON.stringify(data));
+
+      setData(data);
+
+      setIsLoading(false);
+      console.log(`[pay] loaded payment link ${slug}:`, JSON.stringify(dataArray[0]));
+
+      // set data for the context provider
+      setPrice(data.productPrice);
+      setPaymentLink(paymentLink.id as string);
+      setProduct(data.productName);
+    };
+
+    setPaymentLinkSlug(paymentLinkSlug as string);
+
     if (!paymentLinkSlug) {
       return;
     }
+
     setIsLoading(true);
-    loadPaymentLink(paymentLinkSlug);
+    getPaymentLinkData(paymentLinkSlug);
   }, [paymentLinkSlug]);
 
   return (
