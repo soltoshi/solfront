@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import renderWithMerchantLayout from "../../components/MerchantLayout";
 import PaymentLinkCard from "../../components/PaymentLinkCard";
+import PaymentsTable from "../../components/PaymentsTable";
 import { useAuthContext } from "../../context/AuthContext";
 import { getPayments } from "../../state/payment";
 import { loadPaymentLink } from "../../state/paymentLink";
@@ -74,9 +75,13 @@ const PaymentLinkView: NextPageWithLayout = () => {
 
                offset={true}
              />
-             <Box bgColor={'red'} boxSize={524}>
+             <VStack spacing={12} alignSelf={'flex-start'}>
+              <Heading size={'lg'} alignSelf={'flex-start'}>
+                Payments processed
+              </Heading>
+              <PaymentsTable data={paymentsData}/>
+             </VStack>
 
-             </Box>
            </HStack>
         }
 
