@@ -110,22 +110,22 @@ const Checkout: NextPage = () => {
     getTransaction()
   }, [publicKey])
 
-  // // Send the fetched transaction to the connected wallet
-  async function trySendTransaction() {
-    if (!transaction) {
-      return;
-    }
-    try {
-      console.log('[checkout] sending tx to wallet', JSON.stringify(transaction));
-      await sendTransaction(transaction, connection)
-    } catch (e) {
-      console.error(e)
-    }
-  }
 
-  // Send the transaction once it's fetched
+  // Send the transaction once we've created it
   useEffect(() => {
-    trySendTransaction()
+    async function trySendTransaction() {
+      if (!transaction) {
+        return;
+      }
+      try {
+        console.log('[checkout] sending tx to wallet', JSON.stringify(transaction));
+        await sendTransaction(transaction, connection)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    trySendTransaction();
   }, [transaction])
 
   // Check every 0.5s if the transaction is completed
