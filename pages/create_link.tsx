@@ -15,16 +15,18 @@ import {
    Select,
    VStack
 } from "@chakra-ui/react";
-import { NextPage } from "next";
 import { useFormik } from "formik";
 import { createPaymentLink } from "../state/paymentLink";
 import { TODO_MERCHANT } from "../state/constants";
 import { NextPageWithLayout } from "./_app";
 import renderWithMerchantLayout from "../components/MerchantLayout";
+import { useAuthContext } from "../context/AuthContext";
 
 const DEFAULT_PRICE_VALUE = 10.00
 
 const CreateLink: NextPageWithLayout = () => {
+  const {merchantId} = useAuthContext();
+
   const formik = useFormik({
     initialValues: {
       product: '',
@@ -34,7 +36,7 @@ const CreateLink: NextPageWithLayout = () => {
     onSubmit: (values) => {
       // TODO: handle form validation
       createPaymentLink({
-        merchant: TODO_MERCHANT,
+        merchant: merchantId,
         productCurrency: values.priceCurrency,
         productName: values.product,
         productPrice: values.price,
