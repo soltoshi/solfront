@@ -32,6 +32,7 @@
     "@bonfida/utils": "0.0.4",
     "@types/node": "^18.6.0",
     "@types/react": "^18.0.15",
+    "dotenv": "^16.0.1",
     "eslint": "8.12.0",
     "eslint-config-next": "12.1.4",
     "ts-node": "^10.9.1",
