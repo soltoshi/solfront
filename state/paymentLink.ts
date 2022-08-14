@@ -24,6 +24,10 @@ const createPaymentLink = async ({
   productName,
   productPrice,
 }: CreatePaymentLinkParams) => {
+  if (!merchant) {
+    throw new Error("Must have merchant set to create payment link");
+  }
+
   try {
     const generatedId = generateDocumentId(COLLECTION_PREFIX);
     await setDoc(doc(db, COLLECTION_NAME, generatedId), {
