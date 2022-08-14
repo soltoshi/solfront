@@ -1,4 +1,4 @@
-import { Box, Heading, VStack, Spinner} from "@chakra-ui/react";
+import { Box, Heading, VStack, Spinner, Text} from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Keypair, Transaction } from "@solana/web3.js";
@@ -171,6 +171,18 @@ const Checkout: NextPage = () => {
         <Heading fontSize={'2xl'}>
           🛍 Checkout
         </Heading>
+
+        <Box fontWeight={'bold'} textColor={'red'} marginBottom={24}>
+          <Text>
+            TODO: render additional payment details
+          </Text>
+          <Text>
+            TODO: maybe create payment before checkout / while creating transaction
+          </Text>
+          <Text>
+            TODO: payment creation should be idemptotent
+          </Text>
+        </Box>
 
         {/* We render the QR code for the customer to scan */}
         <Box ref={qrRef}/>

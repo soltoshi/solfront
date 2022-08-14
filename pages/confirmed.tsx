@@ -1,4 +1,4 @@
-import { Box, Heading, Link, VStack } from "@chakra-ui/react";
+import { Box, Heading, Link, VStack, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { usePayContext } from "../context/PayContext";
 
@@ -14,10 +14,23 @@ const Confirmed: NextPage = () => {
 
         <Box
           marginTop={'48px!'}
-          textDecoration={'underline'}
         >
+
+          <Box fontWeight={'bold'} textColor={'red'} marginBottom={24}>
+            <Text>
+              TODO: link transaction ID to Solana Devnet Explorer
+            </Text>
+            <Text>
+              TODO: router should have payment ID in it
+            </Text>
+            <Text>
+              TODO: show payment details
+            </Text>
+          </Box>
+
           <Link
             href={`/pay/${paymentLinkSlug}`}
+            textDecoration={'underline'}
           >
             🔙 Go back to pay page
           </Link>
