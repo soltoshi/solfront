@@ -3,10 +3,12 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import PayLayout from "../../components/PayLayout";
 import PaymentLinkCard from "../../components/PaymentLinkCard";
 import { usePayContext } from "../../context/PayContext";
 import { getPaymentLinkBySlug } from "../../state/paymentLink";
+import { NextPageWithLayout } from "../_app";
 
 interface PaymentLinkData {
   link?: string;
@@ -15,7 +17,7 @@ interface PaymentLinkData {
   productPrice?: number;
 }
 
-const Pay: NextPage = () => {
+const Pay: NextPageWithLayout = () => {
   const router = useRouter();
   const { paymentLinkId: paymentLinkSlug } = router.query;
 
@@ -102,6 +104,14 @@ const Pay: NextPage = () => {
       </VStack>
     </>
   )
+}
+
+Pay.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <PayLayout>
+      {page}
+    </PayLayout>
+  );
 }
 
 export default Pay;
