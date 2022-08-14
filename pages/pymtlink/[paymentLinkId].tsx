@@ -45,13 +45,13 @@ const PaymentLinkView: NextPageWithLayout = () => {
       console.log('[pay] payments data', JSON.stringify(loadPaymentsResponse, null, 2));
     };
 
-    if (!paymentLinkId) {
+    if (!paymentLinkId || !merchantId) {
       return;
     }
 
     setIsLoading(true);
     getPaymentLinkData(paymentLinkId);
-  }, [paymentLinkId]);
+  }, [paymentLinkId, merchantId]);
 
   return (
     <>
