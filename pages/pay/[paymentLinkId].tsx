@@ -17,7 +17,7 @@ interface PaymentLinkData {
 
 const Pay: NextPage = () => {
   const router = useRouter();
-  const { paymentLinkId } = router.query;
+  const { paymentLinkSlug } = router.query;
 
   // state that renders
   const [data, setData] = useState<PaymentLinkData>({});
@@ -34,7 +34,8 @@ const Pay: NextPage = () => {
       console.error('[pay] no record of payment link with slug', slug);
       router.push('/404');
     }
-    setData(dataArray[0]);
+    const paymentLink = dataArray[0];
+    setData(paymentLink);
 
     setIsLoading(false);
     console.log(`[pay] loaded payment link ${slug}:`, JSON.stringify(dataArray[0]));
@@ -42,17 +43,17 @@ const Pay: NextPage = () => {
 
     // set data for the context provider
     setPrice(data.productPrice);
-    setPaymentLink(paymentLinkId as string);
+    setPaymentLink(paymentLinkSlug as string);
     setProduct(data.productName);
   };
 
   useEffect(() => {
-    if (!paymentLinkId) {
+    if (!paymentLinkSlug) {
       return;
     }
     setIsLoading(true);
-    loadPaymentLink(paymentLinkId);
-  }, [paymentLinkId]);
+    loadPaymentLink(paymentLinkSlug);
+  }, [paymentLinkSlug]);
 
   return (
     <>
