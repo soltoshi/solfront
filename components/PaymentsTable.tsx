@@ -46,15 +46,16 @@ export default function PaymentsTable(props: PaymentsTableProps) {
         </Thead>
 
         {
-          props.data.map((paymentData) => {
+          props.data.map((snapshot) => {
+            const data = snapshot.data();
             return (
               <Tr
-                key={paymentData.id}
+                key={snapshot.id}
               >
-                <Td>{paymentData.id}</Td>
-                <Td>{renderEpochSeconds(paymentData.created)}</Td>
-                <Td isNumeric>{paymentData.amount}</Td>
-                <Td>{PaymentState[paymentData.state]}</Td>
+                <Td>{snapshot.id}</Td>
+                <Td>{renderEpochSeconds(data.created)}</Td>
+                <Td isNumeric>{data.amount}</Td>
+                <Td>{PaymentState[data.state]}</Td>
               </Tr>
             )
           })
