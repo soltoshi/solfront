@@ -2,18 +2,19 @@ import { Box, Heading, VStack, Spinner, Text} from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Keypair, Transaction } from "@solana/web3.js";
-import { NextPage } from "next";
 import Link from "next/link";
 import BigNumber from "bignumber.js";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { MakeTransactionInputData, MakeTransactionOutputData } from "./api/make_transaction";
 import { findReference, FindReferenceError, encodeURL, TransferRequestURLFields, createQR } from "@solana/pay";
 import { usePayContext } from "../context/PayContext";
 import { shopAddress } from "../lib/addresses";
+import { NextPageWithLayout } from "./_app";
+import PayLayout from "../components/PayLayout";
 
 // TODO: affordance for rendering shipping address
-const Checkout: NextPage = () => {
+const Checkout: NextPageWithLayout = () => {
   const router = useRouter();
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
@@ -212,6 +213,14 @@ const Checkout: NextPage = () => {
       </VStack>
     </>
   )
+}
+
+Checkout.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <PayLayout>
+      {page}
+    </PayLayout>
+  );
 }
 
 export default Checkout;

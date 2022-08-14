@@ -1,8 +1,11 @@
 import { Box, Heading, Link, VStack, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
+import { ReactElement } from "react";
+import PayLayout from "../components/PayLayout";
 import { usePayContext } from "../context/PayContext";
+import { NextPageWithLayout } from "./_app";
 
-const Confirmed: NextPage = () => {
+const Confirmed: NextPageWithLayout = () => {
   const {paymentLinkSlug} = usePayContext();
 
   return (
@@ -38,6 +41,14 @@ const Confirmed: NextPage = () => {
       </VStack>
     </>
   )
+}
+
+Confirmed.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <PayLayout>
+      {page}
+    </PayLayout>
+  );
 }
 
 export default Confirmed;
