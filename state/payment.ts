@@ -79,7 +79,7 @@ const getPayments = async({merchant, paymentLink}) => {
 
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((docSnapshot) => {
-      return docSnapshot.data();
+      return docSnapshot;
     });
   } catch (e) {
     console.error("Error loading payments: ", e);
