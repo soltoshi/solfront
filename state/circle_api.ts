@@ -1,7 +1,9 @@
 import fetch from "node-fetch";
 
+// TODO: make these enviroment variables
 const CIRCLE_API_KEY = "QVBJX0tFWTo2ODgxYzFlMGM5ZDc3ZDNjY2IzYmVkN2I2ZWZjZjc1ZTphOWZkNTY4YjVhOGQ1ZDU4Nzg4ZTRiZjAwNjRlMWE2MQ=="
 const MASTER_WALLET_ID = "1001066014"
+
 const CIRCLE_API_ENDPOINT = "https://api-sandbox.circle.com"
 
 async function postData(path= '', data = {}) {
