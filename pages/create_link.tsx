@@ -19,10 +19,12 @@ import { NextPage } from "next";
 import { useFormik } from "formik";
 import { createPaymentLink } from "../state/paymentLink";
 import { TODO_MERCHANT } from "../state/constants";
+import { NextPageWithLayout } from "./_app";
+import renderWithMerchantLayout from "../components/MerchantLayout";
 
 const DEFAULT_PRICE_VALUE = 10.00
 
-const CreateLink: NextPage = () => {
+const CreateLink: NextPageWithLayout = () => {
   const formik = useFormik({
     initialValues: {
       product: '',
@@ -116,5 +118,7 @@ const CreateLink: NextPage = () => {
     </div>
   );
 }
+
+CreateLink.getLayout = renderWithMerchantLayout;
 
 export default CreateLink;

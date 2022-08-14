@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import app from "../state/firebase";
 import { useRouter } from "next/router";
 import { useAuthContext } from "../context/AuthContext";
+import { NextPageWithLayout } from "./_app";
+import renderWithMerchantLayout from "../components/MerchantLayout";
 
-const MagicLink: NextPage = () => {
+const MagicLink: NextPageWithLayout = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -73,5 +75,7 @@ const MagicLink: NextPage = () => {
     </>
   )
 }
+
+MagicLink.getLayout = renderWithMerchantLayout;
 
 export default MagicLink;

@@ -2,11 +2,13 @@ import { Container, Heading, Wrap} from "@chakra-ui/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import renderWithMerchantLayout from "../components/MerchantLayout";
 import PaymentLinkCard from "../components/PaymentLinkCard";
 import { useAuthContext } from "../context/AuthContext";
 import { getPaymentLinks } from "../state/paymentLink";
+import { NextPageWithLayout } from "./_app";
 
-const Dashboard: NextPage = () => {
+const Dashboard: NextPageWithLayout = () => {
   const [paymentLinks, setPaymentLinks] = useState([]);
   const {merchantId} = useAuthContext();
 
@@ -54,5 +56,7 @@ const Dashboard: NextPage = () => {
     </>
   );
 }
+
+Dashboard.getLayout = renderWithMerchantLayout;
 
 export default Dashboard;

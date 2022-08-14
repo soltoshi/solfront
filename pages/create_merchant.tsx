@@ -13,8 +13,10 @@ import { NextPage } from "next";
 import { useFormik } from "formik";
 import { createMerchant } from "../state/merchant";
 import { useAuthContext } from "../context/AuthContext";
+import { NextPageWithLayout } from "./_app";
+import renderWithMerchantLayout from "../components/MerchantLayout";
 
-const CreateMerchant: NextPage = () => {
+const CreateMerchant: NextPageWithLayout = () => {
   const {authUid} = useAuthContext();
 
   const formik = useFormik({
@@ -101,5 +103,7 @@ const CreateMerchant: NextPage = () => {
     </div>
   );
 }
+
+CreateMerchant.getLayout = renderWithMerchantLayout;
 
 export default CreateMerchant;

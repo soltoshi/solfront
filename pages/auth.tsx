@@ -1,10 +1,11 @@
-import { Box, Button, Container, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
-import { NextPage } from "next";
+import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
 import Head from "next/head";
 import { useState } from "react";
-import { createMerchantAuth, sendSignInLinkToMerchantEmail } from "../state/auth";
+import renderWithMerchantLayout from "../components/MerchantLayout";
+import { sendSignInLinkToMerchantEmail } from "../state/auth";
+import { NextPageWithLayout } from "./_app";
 
-const Home: NextPage = () => {
+const Auth: NextPageWithLayout = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
@@ -118,4 +119,6 @@ const Home: NextPage = () => {
   );
 }
 
-export default Home;
+Auth.getLayout = renderWithMerchantLayout;
+
+export default Auth;
