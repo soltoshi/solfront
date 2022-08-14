@@ -22,7 +22,7 @@ const Checkout: NextPage = () => {
 
   // State to hold API response fields
   const [transaction, setTransaction] = useState<Transaction | null>(null);
-  const {price, paymentLink, product} = usePayContext();
+  const {price, paymentLink, product, setTxIdAndCreatePayment} = usePayContext();
 
   // Generate the unique reference which will be used for this transaction
   const reference = useMemo(() => Keypair.generate().publicKey, []);
@@ -134,6 +134,10 @@ const Checkout: NextPage = () => {
       try {
         // Check if there is any transaction for the reference
         const signatureInfo = await findReference(connection, reference, {finality: 'confirmed'})
+
+        // Use the pay context to record the tx id and track
+        setTxIdAndCreatePayment(signatureInfo.signature);
+
         setIsLoading(false);
         router.push('/confirmed')
       } catch (e) {
