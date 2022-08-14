@@ -31,7 +31,6 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
     setTxId(txId);
 
     const args = {
-      merchant,
       paymentLink,
       created: getCurrentTime(),
       amount: price,
@@ -39,7 +38,7 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
       walletAddress: publicKey.toString(),
       txId: txId,
       state: Payment.PaymentState.Acquired,
-    } as CreatePaymentParams;
+    } as Payment.CreatePaymentParams;
 
     console.log("[pay-context] creating payment with args", JSON.stringify(args));
 
