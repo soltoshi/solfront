@@ -6,18 +6,29 @@ import generateDocumentId from "./util/generateDocumentId";
 const COLLECTION_NAME = 'payments';
 const COLLECTION_PREFIX = 'pymt';
 
-type CreatePaymentParams = {
+export enum PaymentState {
+  Acquired,
+  Processing,
+  Fulfilled,
+}
+
+export enum Currency {
+  SOL,
+  USDC,
+}
+
+export type CreatePaymentParams = {
   merchant: string;
   paymentLink: string;
   created: number;
 
-  walletAddress: string;
   amount: number;
+  currency: Currency;
+
+  walletAddress: string;
   txId: string;
 
-  // TODO: these should be enums
-  state: string;
-  currency: string;
+  state: PaymentState;
 
   // TODO: additional details
   paymentDetails: object;
@@ -75,5 +86,3 @@ export {
   createPayment,
   getPayments,
 };
-
-export default CreatePaymentParams;
