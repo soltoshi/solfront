@@ -1,46 +1,48 @@
 import fetch from "node-fetch";
 
-// TODO: make these enviroment variables
+// TODO: make these environment variables
 const CIRCLE_API_KEY = "QVBJX0tFWTo2ODgxYzFlMGM5ZDc3ZDNjY2IzYmVkN2I2ZWZjZjc1ZTphOWZkNTY4YjVhOGQ1ZDU4Nzg4ZTRiZjAwNjRlMWE2MQ=="
 const MASTER_WALLET_ID = "1001066014"
 
 const CIRCLE_API_ENDPOINT = "https://api-sandbox.circle.com"
 
-async function postData(path= '', data = {}) {
-  const url = `${CIRCLE_API_ENDPOINT}${path}`;
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+// HTTP helpers
+
+async function makeHttpRequest(url, method, data=null) {
+  const opts = {
+    method,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${CIRCLE_API_KEY}`,
     },
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
+  };
+
+  if (data) {
+    opts['body'] = JSON.stringify(data);
+  }
+
+  const response = await fetch(url, opts);
+  return response;
 }
 
-async function getData(path = '') {
+async function post(path= '', data = {}) {
+  const url = `${CIRCLE_API_ENDPOINT}${path}`;
+  const response = await makeHttpRequest(url, 'POST', data);
+  return response.json();
+}
+
+async function get(path = '') {
   const url = `${CIRCLE_API_ENDPOINT}${path}`
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'GET', // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${CIRCLE_API_KEY}`,
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
+  const response = await makeHttpRequest(url, 'GET');
+  return response.json();
 }
 
 // API functions
 
 async function createBankAccount(data={}) {
-  const response = await postData('/v1/banks/wires', {
+  const response = await post('/v1/banks/wires', {
     idempotencyKey: "6ae62bf2-bd71-49ce-a599-165ffcc33680",
     beneficiaryName: "John Smith",
     accountNumber: "123456789",
@@ -63,7 +65,7 @@ async function createBankAccount(data={}) {
 }
 
 async function sendPayout(data) {
-  const response = await postData('/v1/payouts', {
+  const response = await post('/v1/payouts', {
     idempotencyKey: "ff9d668a-ccde-48c3-82fd-8deb2a6f7c28",
     destination: {
       type: "wire",
@@ -83,22 +85,22 @@ async function sendPayout(data) {
 }
 
 async function getPayout(id) {
-  const response = await getData(`/v1/payouts/${id}`);
+  const response = await get(`/v1/payouts/${id}`);
   console.log("Get payout response", response);
 }
 
 async function listPayouts() {
-  const response = await getData(`/v1/payouts`);
+  const response = await get(`/v1/payouts`);
   console.log("List payouts response", response);
 }
 
 async function listBalances() {
-  const response = await getData('/v1/businessAccount/balances');
+  const response = await get('/v1/businessAccount/balances');
   console.log("List balances response", JSON.stringify(response));
 }
 
 async function transferOut({destinationAddress, destinationChain}) {
-  const response = await postData('/v1/transfers', {
+  const response = await post('/v1/transfers', {
     idempotencyKey: "4ca72ac7-5217-49bb-bbe6-e8dcb4c53c25",
     source: {
       type: "wallet",
@@ -119,12 +121,12 @@ async function transferOut({destinationAddress, destinationChain}) {
 }
 
 async function listTransfers() {
-  const response = await getData('/v1/transfers');
+  const response = await get('/v1/transfers');
   console.log("List transfers response", response);
 }
 
 async function getTransfer(id) {
-  const response = await getData(`/v1/transfers/${id}`);
+  const response = await get(`/v1/transfers/${id}`);
   console.log("Get transfer response", JSON.stringify(response));
 }
 
