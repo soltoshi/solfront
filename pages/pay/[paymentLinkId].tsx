@@ -38,12 +38,11 @@ const Pay: NextPage = () => {
       const paymentLink = dataArray[0];
       const data = paymentLink.data() as PaymentLinkData;
 
-      console.log('loaded payment link with data', JSON.stringify(data));
-
       setData(data);
 
       setIsLoading(false);
-      console.log(`[pay] loaded payment link ${slug}:`, JSON.stringify(dataArray[0]));
+      console.log(`[pay] loaded payment link ${slug}:`, paymentLink.id);
+      console.log('[pay] parsed data', JSON.stringify(data));
 
       // set data for the context provider
       setPrice(data.productPrice);
