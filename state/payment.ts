@@ -1,6 +1,7 @@
 import { setDoc, doc, getDocs, collection, getDoc, query, where } from "firebase/firestore";
 import generatePaymentLinkSlug from "../util/generate_link_slug";
 import db from "./database";
+import { loadPaymentLink } from "./paymentLink";
 import generateDocumentId from "./util/generateDocumentId";
 
 const COLLECTION_NAME = 'payments';
@@ -18,7 +19,6 @@ export enum Currency {
 }
 
 export type CreatePaymentParams = {
-  merchant: string;
   paymentLink: string;
   created: number;
 
@@ -35,7 +35,6 @@ export type CreatePaymentParams = {
 }
 
 const createPayment = async ({
-  merchant,
   paymentLink,
   created,
   walletAddress,
@@ -47,6 +46,11 @@ const createPayment = async ({
 }: CreatePaymentParams) => {
   try {
     const generatedId = generateDocumentId(COLLECTION_PREFIX);
+
+    // we fetch the merchant from the payment link
+    const loadedPaymentLink = await loadPaymentLink({linkId: paymentLink});
+    const merchant = loadedPaymentLink.merchant;
+
     await setDoc(doc(db, COLLECTION_NAME, generatedId), {
       merchant,
       payment_link: paymentLink,
