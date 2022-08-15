@@ -1,5 +1,4 @@
-import { setDoc, doc, getDocs, collection, getDoc, query, where } from "firebase/firestore";
-import generatePaymentLinkSlug from "../util/generate_link_slug";
+import { setDoc, doc, getDocs, collection, query, where } from "firebase/firestore";
 import db from "./database";
 import { loadPaymentLink } from "./paymentLink";
 import generateDocumentId from "./util/generateDocumentId";
