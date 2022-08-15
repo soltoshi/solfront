@@ -1,4 +1,4 @@
-import { setDoc, doc, getDocs, collection, query, where } from "firebase/firestore";
+import { setDoc, doc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
 import db from "./database";
 import { loadPaymentLink } from "./paymentLink";
 import generateDocumentId from "./util/generateDocumentId";
@@ -67,11 +67,14 @@ const createPayment = async ({
   }
 }
 
-const getPayments = async({merchant, paymentLink}) => {
+const getPayments = async({merchant, paymentLink, orderByState=false}) => {
   try {
     const filters = [where("merchant", "==", merchant)];
     if (paymentLink && paymentLink.length > 0) {
       filters.push(where("payment_link", "==", paymentLink));
+    }
+    if (orderByState) {
+      filters.push(orderBy("state", "asc"));
     }
     const q = query(collection(db, COLLECTION_NAME), ...filters);
     console.log(`loading payments for:`, {merchant, paymentLink});
