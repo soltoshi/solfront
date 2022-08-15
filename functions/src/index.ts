@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable require-jsdoc */
 import * as admin from "firebase-admin";
@@ -11,7 +12,7 @@ admin.initializeApp();
 
 // TODO: make these environment variables
 const CIRCLE_API_KEY = "QVBJX0tFWTo2ODgxYzFlMGM5ZDc3ZDNjY2IzYmVkN2I2ZWZjZjc1ZTphOWZkNTY4YjVhOGQ1ZDU4Nzg4ZTRiZjAwNjRlMWE2MQ==";
-const MASTER_WALLET_ID = "1001066014";
+// const MASTER_WALLET_ID = "1001066014";
 
 const CIRCLE_API_ENDPOINT = "https://api-sandbox.circle.com";
 
@@ -42,11 +43,11 @@ async function post(path= "", data = {}) {
   return response.json();
 }
 
-async function get(path = "") {
-  const url = `${CIRCLE_API_ENDPOINT}${path}`;
-  const response = await makeHttpRequest(url, "GET", null);
-  return response.json();
-}
+// async function get(path = "") {
+//   const url = `${CIRCLE_API_ENDPOINT}${path}`;
+//   const response = await makeHttpRequest(url, "GET", null);
+//   return response.json();
+// }
 
 // Circle API functions
 
@@ -69,7 +70,6 @@ async function createBankAccount(data={}) {
     },
   });
 
-  console.log("Create bank account response", response);
   return response;
 }
 
@@ -89,7 +89,6 @@ async function sendPayout(data: any) {
     },
   });
 
-  console.log("Send payout response", response);
   return response;
 }
 
