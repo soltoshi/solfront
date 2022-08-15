@@ -17,6 +17,11 @@ const Dashboard: NextPageWithLayout = () => {
       const data = await getPaymentLinks({merchant: merchantId});
       setPaymentLinks(data);
     };
+
+    if (!merchantId) {
+      return;
+    }
+
     loadPaymentLinks();
   }, [merchantId]);
 
