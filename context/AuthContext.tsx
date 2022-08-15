@@ -5,6 +5,7 @@ interface IAuthContext {
   authUid?: string,
   setAuthUid?: (authUid: string) => void,
   merchantId?: string,
+  isLoggedIn?: () => boolean;
 }
 
 const AuthContext = createContext<IAuthContext>({});
@@ -12,6 +13,10 @@ const AuthContext = createContext<IAuthContext>({});
 export const AuthContextProvider: FC<{children: ReactNode}> = ({ children }) => {
   const [authUid, setAuthUid] = useState<string>(null);
   const [merchantId, setMerchantId] = useState<string>(null);
+
+  const isLoggedIn = () => {
+    return !!authUid;
+  }
 
   // This should run every time authUid gets set so that the rest of our app can
   // easily retrieve the authenticated merchant account
@@ -50,6 +55,7 @@ export const AuthContextProvider: FC<{children: ReactNode}> = ({ children }) => 
         authUid,
         setAuthUid,
         merchantId,
+        isLoggedIn,
       }}
     >
       {children}
