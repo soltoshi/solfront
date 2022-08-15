@@ -110,7 +110,7 @@ exports.sendPayout = functions.firestore.document("/payment/{paymentId}")
       functions.logger.log("paying out to merchant's Circle bank account", {merchantId, circleBankAccountId});
 
       // construct circle send payout request
-      const sendPayoutResponse = await sendPayout({});
+      const sendPayoutResponse = await sendPayout({bankAccountId: circleBankAccountId});
       functions.logger.log("sent Circle payout", JSON.stringify(sendPayoutResponse));
 
       // set payout id on payment, update state
@@ -128,6 +128,8 @@ exports.sendPayout = functions.firestore.document("/payment/{paymentId}")
         state: newPaymentState,
       }, {merge: true});
       functions.logger.log("set Circle payout id on payment, updated payment state", {paymentId, circlePayoutId, newPaymentState});
+
+      return;
     });
 
 exports.makeBankAccount = functions.firestore.document("/merchant/{merchantId}")
@@ -146,6 +148,8 @@ exports.makeBankAccount = functions.firestore.document("/merchant/{merchantId}")
         circleBankAccountId,
       }, {merge: true});
       functions.logger.log("set bank account on merchant doc", {circleBankAccountId});
+
+      return;
     });
 
 // TODO: on payment query - should see if state needs to be updated
