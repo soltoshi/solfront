@@ -24,7 +24,7 @@ async function makeHttpRequest(url, method, data=null) {
   }
 
   const response = await fetch(url, opts);
-  return response;
+  return response.json();
 }
 
 async function post(path= '', data = {}) {
@@ -61,7 +61,7 @@ async function createBankAccount(data={}) {
   })
 
   console.log("Create bank account response", response);
-  return response;
+  return response.json();
 }
 
 async function sendPayout(data) {
@@ -81,22 +81,25 @@ async function sendPayout(data) {
   })
 
   console.log("Send payout response", response);
-  return response;
+  return response.json();
 }
 
 async function getPayout(id) {
   const response = await get(`/v1/payouts/${id}`);
   console.log("Get payout response", response);
+  return response.json();
 }
 
 async function listPayouts() {
   const response = await get(`/v1/payouts`);
   console.log("List payouts response", response);
+  return response.json();
 }
 
 async function listBalances() {
   const response = await get('/v1/businessAccount/balances');
   console.log("List balances response", JSON.stringify(response));
+  return response.json();
 }
 
 async function transferOut({destinationAddress, destinationChain}) {
@@ -118,16 +121,19 @@ async function transferOut({destinationAddress, destinationChain}) {
   })
 
   console.log("Transfer out response", JSON.stringify(response));
+  return response.json();
 }
 
 async function listTransfers() {
   const response = await get('/v1/transfers');
   console.log("List transfers response", response);
+  return response.json();
 }
 
 async function getTransfer(id) {
   const response = await get(`/v1/transfers/${id}`);
   console.log("Get transfer response", JSON.stringify(response));
+  return response.json();
 }
 
 // TODO: send USDC in
