@@ -34,19 +34,19 @@ async function makeHttpRequest(url: any, method: any, data: any) {
   }
 
   const response = await fetch(url, opts);
-  return response;
+  return response.json();
 }
 
 async function post(path= "", data = {}) {
   const url = `${CIRCLE_API_ENDPOINT}${path}`;
   const response = await makeHttpRequest(url, "POST", data);
-  return response.json();
+  return response;
 }
 
 // async function get(path = "") {
 //   const url = `${CIRCLE_API_ENDPOINT}${path}`;
 //   const response = await makeHttpRequest(url, "GET", null);
-//   return response.json();
+//   return response;
 // }
 
 // Circle API functions
@@ -114,7 +114,7 @@ exports.sendPayout = functions.firestore.document("/payment/{paymentId}")
       functions.logger.log("sent Circle payout", JSON.stringify(sendPayoutResponse));
 
       // set payout id on payment, update state
-      const circlePayoutId = sendPayoutResponse.id;
+      const circlePayoutId = sendPayoutResponse.data.id;
       if (!circlePayoutId) {
         functions.logger.error("failed to create Circle payout", {paymentId});
         return;
@@ -141,7 +141,7 @@ exports.makeBankAccount = functions.firestore.document("/merchant/{merchantId}")
       functions.logger.log("created Circle bank account", JSON.stringify(createBankAccountResponse));
 
       // set the bank account id on the merchant document
-      const circleBankAccountId = createBankAccountResponse.id;
+      const circleBankAccountId = createBankAccountResponse.data.id;
       await snap.ref.set({
         circleBankAccountId,
       }, {merge: true});
