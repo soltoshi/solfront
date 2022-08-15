@@ -1,7 +1,7 @@
-import { Container, Heading} from "@chakra-ui/react";
+import { Box, Container, Heading} from "@chakra-ui/react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import LandingNav from "../components/LandingNav";
 
 const Home: NextPage = () => {
   return (
@@ -13,9 +13,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container centerContent={true}>
-        <Heading>Landing page</Heading>
-      </Container>
+      <LandingNav/>
+      <Box padding={'2rem 2rem'}>
+        <Container centerContent={true}>
+          <Heading>Landing page</Heading>
+        </Container>
+      </Box>
     </>
   );
 }
