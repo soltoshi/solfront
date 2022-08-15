@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable require-jsdoc */
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
@@ -95,23 +96,39 @@ async function sendPayout(data: any) {
 // Cloud functions
 
 exports.sendPayout = functions.firestore.document("/payment/{paymentId}")
-    .onCreate((snap, context) => {
-      const original = snap.data().original;
+    .onCreate(async (snap, context) => {
       const paymentId = context.params.paymentId;
-
-      functions.logger.log("[sendPayout] creating payout for", paymentId, JSON.stringify(original));
+      functions.logger.log("creating Circle payout for payment", paymentId);
 
       // get the merchant to get the bank account id
+      const merchantId = snap.data().merchant;
+      const merchant = await admin.firestore().doc(`merchants/${merchantId}`).get();
+      const circleBankAccountId = merchant.data()?.circleBankAccountId;
+      if (!circleBankAccountId) {
+        functions.logger.error("could not get merchant's Circle bank account", {merchantId});
+        return;
+      }
+      functions.logger.log("paying out to merchant's Circle bank account", {merchantId, circleBankAccountId});
+
       // construct circle send payout request
-      // set payout id on payment
-      // update payment state
-      // TODO: function that checks payout state everytime a payment is queried
+      const sendPayoutResponse = await sendPayout({});
+      functions.logger.log("sent Circle payout", JSON.stringify(sendPayoutResponse));
 
-      // sendPayout({
+      // set payout id on payment, update state
+      const circlePayoutId = sendPayoutResponse.id;
+      if (!circlePayoutId) {
+        functions.logger.error("failed to create Circle payout", {paymentId});
+        return;
+      }
 
-      // })
+      // State enum 1 == Processing state
+      const newPaymentState = 1;
 
-    // snap.ref.set({payoutId}, {merge: true});
+      await snap.ref.set({
+        circlePayoutId,
+        state: newPaymentState,
+      }, {merge: true});
+      functions.logger.log("set Circle payout id on payment, updated payment state", {paymentId, circlePayoutId, newPaymentState});
     });
 
 exports.makeBankAccount = functions.firestore.document("/merchant/{merchantId}")
@@ -125,10 +142,11 @@ exports.makeBankAccount = functions.firestore.document("/merchant/{merchantId}")
       functions.logger.log("created Circle bank account", JSON.stringify(createBankAccountResponse));
 
       // set the bank account id on the merchant document
+      const circleBankAccountId = createBankAccountResponse.id;
       await snap.ref.set({
-        circleBankAccountId: createBankAccountResponse.id,
+        circleBankAccountId,
       }, {merge: true});
-      functions.logger.log("set bank account on merchant doc");
+      functions.logger.log("set bank account on merchant doc", {circleBankAccountId});
     });
 
 // TODO: on payment query - should see if state needs to be updated
