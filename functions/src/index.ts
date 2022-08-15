@@ -7,7 +7,7 @@ import * as functions from "firebase-functions";
 
 // @ts-nocheck
 
-admin.initializeApp();
+admin.initializeApp({projectId: "solfront-10962"});
 
 
 // TODO: make these environment variables
