@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { createContext, useContext, useState, FC, ReactNode, useEffect } from "react";
 import { getMerchantByAuthUserId } from "../state/merchant";
 
@@ -6,6 +7,7 @@ interface IAuthContext {
   setAuthUid?: (authUid: string) => void,
   merchantId?: string,
   isLoggedIn?: () => boolean;
+  handleSignOut?: () => void;
 }
 
 const AuthContext = createContext<IAuthContext>({});
@@ -14,8 +16,21 @@ export const AuthContextProvider: FC<{children: ReactNode}> = ({ children }) => 
   const [authUid, setAuthUid] = useState<string>(null);
   const [merchantId, setMerchantId] = useState<string>(null);
 
+  const router = useRouter();
+
   const isLoggedIn = () => {
     return !!authUid;
+  }
+
+  const handleSignOut = () => {
+    // clear the auth uid
+    setAuthUid(null);
+    // clear the merchant id
+    setMerchantId(null);
+    // clear the cookie
+    localStorage.removeItem("solfrontAuthUid");
+    // route to the landing page
+    router.push('/');
   }
 
   // This should run every time authUid gets set so that the rest of our app can
@@ -33,6 +48,13 @@ export const AuthContextProvider: FC<{children: ReactNode}> = ({ children }) => 
         // session
         const maybeAuthUid = localStorage.getItem("solfrontAuthUid");
         console.log("[auth] checking if auth is in local storage, found:", maybeAuthUid);
+
+        // We route to the auth page if there's nothing in local storage as well
+        if (!maybeAuthUid) {
+          console.log("[auth] no auth found, routing to auth page");
+          router.push('/auth');
+        }
+
         setAuthUid(maybeAuthUid);
       }
 
@@ -56,6 +78,7 @@ export const AuthContextProvider: FC<{children: ReactNode}> = ({ children }) => 
         setAuthUid,
         merchantId,
         isLoggedIn,
+        handleSignOut,
       }}
     >
       {children}

@@ -40,7 +40,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {isLoggedIn} = useAuthContext();
+  const {isLoggedIn, handleSignOut} = useAuthContext();
   const loggedIn = isLoggedIn();
 
   const renderLoggedInNav = () => {
@@ -75,11 +75,13 @@ export default function NavBar() {
             <MenuItem>Link 1</MenuItem>
             <MenuItem>Link 2</MenuItem>
             <MenuDivider />
-            <MenuItem>Link 3</MenuItem>
+            <MenuItem onClick={handleSignOut}>
+              Sign out
+            </MenuItem>
           </MenuList>
         </Menu>
       </>
-    )
+    );
 
   }
 
@@ -109,8 +111,6 @@ export default function NavBar() {
             {
               loggedIn ? renderLoggedInNav() : <></>
             }
-
-
           </Flex>
         </Flex>
 
