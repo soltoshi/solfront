@@ -1,6 +1,6 @@
 import { Container, Heading, Wrap} from "@chakra-ui/react";
-import { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import renderWithMerchantLayout from "../components/MerchantLayout";
 import PaymentLinkCard from "../components/PaymentLinkCard";
@@ -11,6 +11,7 @@ import { NextPageWithLayout } from "./_app";
 const Dashboard: NextPageWithLayout = () => {
   const [paymentLinks, setPaymentLinks] = useState([]);
   const {merchantId} = useAuthContext();
+  const router = useRouter();
 
   useEffect(() => {
     const loadPaymentLinks = async () => {
@@ -44,14 +45,19 @@ const Dashboard: NextPageWithLayout = () => {
         </Heading>
         <Wrap spacing={24} shouldWrapChildren={true} align='center'>
           {
-            paymentLinks.map((paymentLinkData) => {
+            paymentLinks.map((snapshot) => {
+              const paymentLinkId = snapshot.id;
+              const paymentLinkData = snapshot.data();
               return (
                 <PaymentLinkCard
-                  key={paymentLinkData.link}
+                  key={paymentLinkId}
                   link={paymentLinkData.link}
                   productName={paymentLinkData.productName}
                   price={paymentLinkData.productPrice}
                   currency={paymentLinkData.productCurrency}
+                  onClick={(event) => {
+                    router.push(`/pymtlink/${paymentLinkId}`);
+                  }}
                 />
               );
             })

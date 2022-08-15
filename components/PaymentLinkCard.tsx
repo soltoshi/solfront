@@ -7,6 +7,7 @@ import {
   Stack,
   Image,
   Link,
+  VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
@@ -22,6 +23,9 @@ interface PaymentLinkCardProps {
 
   // for customizing appearance
   offset?: boolean;
+
+  // for turning it into a link
+  onClick?: (event) => void;
 }
 
 function formatPrice(price: string, currency: string): string {
@@ -42,8 +46,23 @@ function getSlugFromLink(link: string) {
 export default function PaymentLinkCard(props: PaymentLinkCardProps) {
   const router = useRouter();
 
+  const optCursorProp = {} as {cursor?: string};
+  if (props.onClick) {
+    optCursorProp.cursor = 'pointer';
+  }
+
   return (
-    <Center py={12}>
+    <Center
+      py={12}
+      onClick={(event) => {
+        event.preventDefault();
+        console.log("card clicked!");
+
+        if (props.onClick) {
+          props.onClick(event);
+        }
+      }}
+    >
       <Box
         role={'group'}
         p={6}
@@ -80,6 +99,7 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
             rounded={'lg'}
             height={230}
             width={282}
+            {...optCursorProp}
             objectFit={'cover'}
             src={IMAGE}
             alt={''}
@@ -96,14 +116,17 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
               {props.link}
             </NextLink>
           </Text>
-          <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-            {props.productName}
-          </Heading>
-          <Stack direction={'row'} align={'center'}>
-            <Text fontWeight={800} fontSize={'xl'}>
-              {formatPrice(props.price, props.currency)}
-            </Text>
-          </Stack>
+          <VStack {...optCursorProp}>
+
+            <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
+              {props.productName}
+            </Heading>
+            <Stack direction={'row'} align={'center'}>
+              <Text fontWeight={800} fontSize={'xl'}>
+                {formatPrice(props.price, props.currency)}
+              </Text>
+            </Stack>
+          </VStack>
         </Stack>
       </Box>
     </Center>
