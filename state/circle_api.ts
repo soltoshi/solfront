@@ -1,8 +1,7 @@
 import fetch from "node-fetch";
 
-// TODO: make these environment variables
-const CIRCLE_API_KEY = "QVBJX0tFWTo2ODgxYzFlMGM5ZDc3ZDNjY2IzYmVkN2I2ZWZjZjc1ZTphOWZkNTY4YjVhOGQ1ZDU4Nzg4ZTRiZjAwNjRlMWE2MQ=="
-const MASTER_WALLET_ID = "1001066014"
+const CIRCLE_API_KEY = process.env.CIRCLE_API_KEY;
+const MASTER_WALLET_ID = process.env.MASTER_WALLET_ID;
 
 const CIRCLE_API_ENDPOINT = "https://api-sandbox.circle.com"
 
