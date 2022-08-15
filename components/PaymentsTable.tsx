@@ -1,4 +1,5 @@
 import {
+  Box,
   Table,
   TableCaption,
   TableContainer,
@@ -52,7 +53,11 @@ export default function PaymentsTable(props: PaymentsTableProps) {
               <Tr
                 key={snapshot.id}
               >
-                <Td>{snapshot.id}</Td>
+                <Td>
+                <Box bgColor={"gray.100"} borderRadius={4} display={'inline-block'} marginLeft={2} padding={2} fontFamily={'mono'}>
+                    {snapshot.id}
+                </Box>
+                </Td>
                 <Td>{renderEpochSeconds(data.created)}</Td>
                 <Td isNumeric>{data.amount}</Td>
                 <Td>{PaymentState[data.state]}</Td>
