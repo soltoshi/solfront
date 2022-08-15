@@ -1,8 +1,7 @@
 import fetch from "node-fetch";
 
-// TODO: make these environment variables
-const CIRCLE_API_KEY = "QVBJX0tFWTo2ODgxYzFlMGM5ZDc3ZDNjY2IzYmVkN2I2ZWZjZjc1ZTphOWZkNTY4YjVhOGQ1ZDU4Nzg4ZTRiZjAwNjRlMWE2MQ=="
-const MASTER_WALLET_ID = "1001066014"
+const CIRCLE_API_KEY = process.env.CIRCLE_API_KEY;
+const MASTER_WALLET_ID = process.env.MASTER_WALLET_ID;
 
 const CIRCLE_API_ENDPOINT = "https://api-sandbox.circle.com"
 
@@ -24,19 +23,19 @@ async function makeHttpRequest(url, method, data=null) {
   }
 
   const response = await fetch(url, opts);
-  return response;
+  return response.json();
 }
 
 async function post(path= '', data = {}) {
   const url = `${CIRCLE_API_ENDPOINT}${path}`;
   const response = await makeHttpRequest(url, 'POST', data);
-  return response.json();
+  return response;
 }
 
 async function get(path = '') {
   const url = `${CIRCLE_API_ENDPOINT}${path}`
   const response = await makeHttpRequest(url, 'GET');
-  return response.json();
+  return response;
 }
 
 // API functions
@@ -73,10 +72,10 @@ async function sendPayout(data) {
     },
     amount: {
       currency: "USD",
-      amount: "1.00"
+      amount: "50.00"
     },
     metadata: {
-      beneficiaryEmail: "john.smith@email.com"
+      beneficiaryEmail: "solfrontapp@gmail.com"
     }
   })
 
@@ -87,16 +86,19 @@ async function sendPayout(data) {
 async function getPayout(id) {
   const response = await get(`/v1/payouts/${id}`);
   console.log("Get payout response", response);
+  return response;
 }
 
 async function listPayouts() {
   const response = await get(`/v1/payouts`);
   console.log("List payouts response", response);
+  return response;
 }
 
 async function listBalances() {
   const response = await get('/v1/businessAccount/balances');
   console.log("List balances response", JSON.stringify(response));
+  return response;
 }
 
 async function transferOut({destinationAddress, destinationChain}) {
@@ -118,16 +120,19 @@ async function transferOut({destinationAddress, destinationChain}) {
   })
 
   console.log("Transfer out response", JSON.stringify(response));
+  return response;
 }
 
 async function listTransfers() {
   const response = await get('/v1/transfers');
   console.log("List transfers response", response);
+  return response;
 }
 
 async function getTransfer(id) {
   const response = await get(`/v1/transfers/${id}`);
   console.log("Get transfer response", JSON.stringify(response));
+  return response;
 }
 
 // TODO: send USDC in

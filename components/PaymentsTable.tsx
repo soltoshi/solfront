@@ -11,6 +11,7 @@ import {
 import { DocumentData } from 'firebase/firestore';
 import { PaymentState } from '../state/payment';
 import { renderEpochSeconds } from '../state/util/time';
+import formatPaymentState from './formatPaymentState';
 
 interface PaymentData {
   id: string;
@@ -60,7 +61,7 @@ export default function PaymentsTable(props: PaymentsTableProps) {
                 </Td>
                 <Td>{renderEpochSeconds(data.created)}</Td>
                 <Td isNumeric>{data.amount}</Td>
-                <Td>{PaymentState[data.state]}</Td>
+                <Td>{formatPaymentState(data.state)}</Td>
               </Tr>
             )
           })

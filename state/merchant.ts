@@ -27,6 +27,7 @@ const createMerchant = async ({name, email, bankAccountNumber, authUid}: CreateM
       auth_user_id: authUid,
     });
     console.log("Created merchant with id", generatedId);
+    return generatedId;
   } catch (e) {
     console.error("Error creating merchant: ", e);
   }

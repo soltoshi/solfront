@@ -4,6 +4,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { clusterApiUrl } from '@solana/web3.js'
 import { PayContextProvider } from '../context/PayContext'
+import PayContainer from './PayContainer'
 
 const PayLayout = ({children}) => {
   // Solana network to use
@@ -17,7 +18,9 @@ const PayLayout = ({children}) => {
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
           <PayContextProvider>
-            {children}
+            <PayContainer>
+              {children}
+            </PayContainer>
           </PayContextProvider>
         </WalletModalProvider>
       </WalletProvider>

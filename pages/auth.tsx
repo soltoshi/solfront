@@ -1,14 +1,24 @@
 import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import renderWithMerchantLayout from "../components/MerchantLayout";
+import { useAuthContext } from "../context/AuthContext";
 import { sendSignInLinkToMerchantEmail } from "../state/auth";
 import { NextPageWithLayout } from "./_app";
 
 const Auth: NextPageWithLayout = () => {
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
+
+  const {isLoggedIn, merchantId} = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn && isLoggedIn() && merchantId) {
+      router.push('/dashboard');
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -30,7 +40,7 @@ const Auth: NextPageWithLayout = () => {
             <Box
               rounded={'lg'}
               bg={useColorModeValue('white', 'gray.700')}
-              boxShadow={'lg'}
+              boxShadow={'base'}
               p={8}>
 
               <form
@@ -42,10 +52,13 @@ const Auth: NextPageWithLayout = () => {
                 }}
               >
                 <Stack spacing={8}>
-                  <Heading size={'md'}>Get magic link</Heading>
+                  {/* <Heading size={'md'}>Get magic link</Heading> */}
                   <FormControl id="email">
                     <FormLabel>Email</FormLabel>
-                    <Input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <Input
+                      // bgColor={"whiteAlpha.100"}
+                      placeholder={'Your email'}
+                      type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                   </FormControl>
                   <Button
                     bg={'blue.400'}
@@ -66,52 +79,6 @@ const Auth: NextPageWithLayout = () => {
               </form>
 
             </Box>
-
-            {/* This is the email + pw login component */}
-
-            {/* <Box
-              rounded={'lg'}
-              bg={useColorModeValue('white', 'gray.700')}
-              boxShadow={'lg'}
-              p={8}>
-
-              <form
-                onSubmit={async (event) => {
-                  event.preventDefault();
-                  createMerchantAuth(email, password).then(() => {
-                    setEmailSent(true);
-                  });
-                }}
-              >
-                <Stack spacing={8}>
-                  <Heading size={'md'}>Register</Heading>
-                  <FormControl id="email">
-                    <FormLabel>Email</FormLabel>
-                    <Input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                  </FormControl>
-                  <FormControl id="email">
-                    <FormLabel>Password</FormLabel>
-                    <Input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                  </FormControl>
-                  <Button
-                    bg={'blue.400'}
-                    color={'white'}
-                    _hover={{
-                      bg: 'blue.500',
-                    }}
-                    type={'submit'}
-                    disabled={emailSent}
-                  >
-                    {
-                      emailSent ?
-                        `✨ Registered ${email} ✨` :
-                        'Register'
-                    }
-                  </Button>
-                </Stack>
-              </form>
-
-            </Box> */}
           </Stack>
         </Flex>
       </Container>

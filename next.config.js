@@ -24,6 +24,9 @@ const rewrites = async () => {
 const nextConfig = {
   reactStrictMode: true,
   rewrites: rewrites,
+  eslint: {
+    dirs: ['pages', 'components', 'context', 'state'],
+  },
 }
 
 module.exports = nextConfig

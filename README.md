@@ -1,34 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Solfront
+This project was built as part of Solana's Summer Hackathon 2022[0].
 
-## Getting Started
+Presentation: https://docs.google.com/presentation/d/13k1g7IsxYn0iBoLFwF22iavdKdr35Ox-XQQmxpP1gww/edit#slide=id.p
 
-First, run the development server:
+## 💡 Motivation
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Today, it’s not easy for merchants to accept crypto payments. Although there are existing solutions, they involve coding and/or complex integrations many smaller businesses do not have the time or resources for. Solfront aims to help small business connect with the next wave of crypto customers.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Trend: businesses are rapidly adopting no-code solutions since traditional API/code-based solutions are either too high-level for larger enterprise businesses or low-level for smaller businesses with less resources to integrate.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- API integrations are expensive to build and serve
+- No-code solutions are much cheaper for merchants to use and us to support
+- Players like Stripe, Adyen, Checkout.com, and more are already distributing via payment links with much success
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+With Solfront, as a merchant, you don’t have to be an expert at crypto. Now, you can create easily-shareable links with Solfront to increase distribution to customers who would prefer to pay with Solana-based tokens.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Together, you and other merchants will build the foundation for new incentive programs with Solana-based NFT as receipts that can be sent straight to their customer’s wallet upon a single transaction.
 
-## Learn More
+Solfront will expand Solana’s ecosystem by bringing Solana Pay to a ubiquitous payment surface that is as easy as sending a lightweight payment link. By doing this, Solfront will close the gap between ecommerce as we know it today and the future of commerce powered by Solana.
 
-To learn more about Next.js, take a look at the following resources:
+## 🤝 Integrations
+- Pyth network for real time SOL-USD quotes (and soon more pairs once we support more pay-in tokens)
+- Circle API for payouts
+- Probably jup.ag and/or FTX once we're moving money on mainnet
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Ongoing issues
+- Magic link auth does not work on prod yet
+- Fulfillment flow and details are not fully coded out yet in the UI for the merchant
+- Need to allow product image upload
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+[0] https://solana.com/summercamp

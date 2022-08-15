@@ -7,9 +7,11 @@ import {
   Stack,
   Image,
   Link,
+  VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { useEffect, useState } from 'react';
 
 // TODO: make this image configurable
 const IMAGE = 'https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80';
@@ -22,6 +24,9 @@ interface PaymentLinkCardProps {
 
   // for customizing appearance
   offset?: boolean;
+
+  // for turning it into a link
+  onClick?: (event) => void;
 }
 
 function formatPrice(price: string, currency: string): string {
@@ -30,7 +35,7 @@ function formatPrice(price: string, currency: string): string {
   } else if (currency == 'SOL') {
     return `${price} SOL`;
   } else {
-    throw new Error("unexpected currency");
+    throw new Error(`Unexpected currency: ${currency}`);
   }
 }
 
@@ -41,16 +46,40 @@ function getSlugFromLink(link: string) {
 
 export default function PaymentLinkCard(props: PaymentLinkCardProps) {
   const router = useRouter();
+  const [payLinkHref, setPayLinkHref] = useState<string>('');
+
+  const optCursorProp = {} as {cursor?: string};
+  if (props.onClick) {
+    optCursorProp.cursor = 'pointer';
+  }
+
+  useEffect(() => {
+    // we do this check since we test locally
+    if ('localhost' == window.location.hostname) {
+      setPayLinkHref(`http://localhost:3000/pay/${getSlugFromLink(props.link)}`);
+    } else {
+      setPayLinkHref(`https://solfront.app/pay/${getSlugFromLink(props.link)}`)
+    }
+  }, [props.link])
 
   return (
-    <Center py={12}>
+    <Center
+      onClick={(event) => {
+        event.preventDefault();
+        console.log("card clicked!");
+
+        if (props.onClick) {
+          props.onClick(event);
+        }
+      }}
+    >
       <Box
         role={'group'}
         p={6}
         maxW={'330px'}
         w={'full'}
         bg={useColorModeValue('white', 'gray.800')}
-        boxShadow={'2xl'}
+        boxShadow={'sm'}
         rounded={'lg'}
         pos={'relative'}
         zIndex={1}>
@@ -80,6 +109,7 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
             rounded={'lg'}
             height={230}
             width={282}
+            {...optCursorProp}
             objectFit={'cover'}
             src={IMAGE}
             alt={''}
@@ -87,23 +117,21 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
         </Box>
         <Stack pt={10} align={'center'}>
           <Text color={'gray.500'} fontSize={'sm'}>
-            <NextLink href={
-              // we do this check since we test locally
-              window.location.hostname == 'localhost' ?
-                `http://localhost:3000/pay/${getSlugFromLink(props.link)}` :
-                `https://${props.link}`
-              }>
-              {props.link}
+            <NextLink href={payLinkHref}>
+              {payLinkHref}
             </NextLink>
           </Text>
-          <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-            {props.productName}
-          </Heading>
-          <Stack direction={'row'} align={'center'}>
-            <Text fontWeight={800} fontSize={'xl'}>
-              {formatPrice(props.price, props.currency)}
-            </Text>
-          </Stack>
+          <VStack {...optCursorProp}>
+
+            <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
+              {props.productName}
+            </Heading>
+            <Stack direction={'row'} align={'center'}>
+              <Text fontWeight={800} fontSize={'xl'}>
+                {formatPrice(props.price, props.currency)}
+              </Text>
+            </Stack>
+          </VStack>
         </Stack>
       </Box>
     </Center>
