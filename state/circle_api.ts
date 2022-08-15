@@ -30,13 +30,13 @@ async function makeHttpRequest(url, method, data=null) {
 async function post(path= '', data = {}) {
   const url = `${CIRCLE_API_ENDPOINT}${path}`;
   const response = await makeHttpRequest(url, 'POST', data);
-  return response.json();
+  return response;
 }
 
 async function get(path = '') {
   const url = `${CIRCLE_API_ENDPOINT}${path}`
   const response = await makeHttpRequest(url, 'GET');
-  return response.json();
+  return response;
 }
 
 // API functions
@@ -61,7 +61,7 @@ async function createBankAccount(data={}) {
   })
 
   console.log("Create bank account response", response);
-  return response.json();
+  return response;
 }
 
 async function sendPayout(data) {
@@ -81,25 +81,25 @@ async function sendPayout(data) {
   })
 
   console.log("Send payout response", response);
-  return response.json();
+  return response;
 }
 
 async function getPayout(id) {
   const response = await get(`/v1/payouts/${id}`);
   console.log("Get payout response", response);
-  return response.json();
+  return response;
 }
 
 async function listPayouts() {
   const response = await get(`/v1/payouts`);
   console.log("List payouts response", response);
-  return response.json();
+  return response;
 }
 
 async function listBalances() {
   const response = await get('/v1/businessAccount/balances');
   console.log("List balances response", JSON.stringify(response));
-  return response.json();
+  return response;
 }
 
 async function transferOut({destinationAddress, destinationChain}) {
@@ -121,19 +121,19 @@ async function transferOut({destinationAddress, destinationChain}) {
   })
 
   console.log("Transfer out response", JSON.stringify(response));
-  return response.json();
+  return response;
 }
 
 async function listTransfers() {
   const response = await get('/v1/transfers');
   console.log("List transfers response", response);
-  return response.json();
+  return response;
 }
 
 async function getTransfer(id) {
   const response = await get(`/v1/transfers/${id}`);
   console.log("Get transfer response", JSON.stringify(response));
-  return response.json();
+  return response;
 }
 
 // TODO: send USDC in
