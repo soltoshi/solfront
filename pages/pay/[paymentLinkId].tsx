@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Heading, Input, Spinner, VStack } from "@chakra-ui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { NextPage } from "next";
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import PayLayout from "../../components/PayLayout";
 import PaymentLinkCard from "../../components/PaymentLinkCard";
+import ShippingAddressForm from "../../components/ShippingAddressForm";
 import { usePayContext } from "../../context/PayContext";
 import { getPaymentLinkBySlug } from "../../state/paymentLink";
 import { NextPageWithLayout } from "../_app";
@@ -15,6 +16,11 @@ interface PaymentLinkData {
   productName?: string;
   productCurrency?: string;
   productPrice?: number;
+  collectDetails?: {
+    email: boolean;
+    phone: boolean;
+    shippingAddress: boolean;
+  };
 }
 
 const Pay: NextPageWithLayout = () => {
@@ -25,6 +31,10 @@ const Pay: NextPageWithLayout = () => {
   const [data, setData] = useState<PaymentLinkData>({});
   const {price, setPrice, setPaymentLink, setProduct, setPaymentLinkSlug} = usePayContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // state for collection details
+  const {email, setEmail, phone, setPhone, setShippingAddress} = usePayContext();
+
 
   // public key of a connected wallet, if there is one
   const {publicKey} = useWallet();
@@ -88,6 +98,59 @@ const Pay: NextPageWithLayout = () => {
            />
         }
 
+        {/* Render inputs for collecting customer details START */}
+        <VStack spacing={24}>
+
+          {
+            data.collectDetails?.email &&
+            <FormControl>
+              <FormLabel>Email</FormLabel>
+              <Input
+                type={'email'}
+                placeholder="Your email"
+                id='email'
+                name='email'
+                onChange={(event) => {
+                  event.preventDefault();
+                  setEmail(event.target.value);
+                }}
+                value={email}
+              />
+            </FormControl>
+          }
+
+          {
+            data.collectDetails?.phone &&
+            <FormControl>
+              <FormLabel>Phone number</FormLabel>
+              <Input
+                type={'text'}
+                placeholder="Your phone number"
+                id='phone'
+                name='phone'
+                onChange={(event) => {
+                  event.preventDefault();
+                  setPhone(event.target.value);
+                }}
+                value={phone}
+              />
+            </FormControl>
+          }
+
+          {
+            data.collectDetails?.shippingAddress &&
+            <ShippingAddressForm
+              onChange={(values) => {
+                console.log('setting shipping address', JSON.stringify(values));
+                setShippingAddress(values);
+              }}
+            />
+          }
+        </VStack>
+
+
+        {/* Render inputs for collecting customer details END */}
+
         <Button
           marginTop={'48px!'}
           size={'lg'}
@@ -96,6 +159,7 @@ const Pay: NextPageWithLayout = () => {
 
           disabled={publicKey === null}
           onClick={() => {
+            // submit any details to the pay context
             router.push(`/checkout`);
           }}
         >
