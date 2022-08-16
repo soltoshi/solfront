@@ -34,7 +34,7 @@ function formatPrice(price: string, currency: string): string {
   } else if (currency == 'SOL') {
     return `${price} SOL`;
   } else {
-    throw new Error("unexpected currency");
+    throw new Error(`Unexpected currency: ${currency}`);
   }
 }
 
