@@ -53,7 +53,6 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
 
   return (
     <Center
-      py={12}
       onClick={(event) => {
         event.preventDefault();
         console.log("card clicked!");
