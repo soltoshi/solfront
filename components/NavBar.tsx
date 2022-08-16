@@ -94,7 +94,6 @@ export default function NavBar() {
       <Box bg={'gray.50'} px={4} padding={8}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing={8} alignItems={'center'}>
-            {/* <Box>🚪</Box> */}
             <HStack
               as={'nav'}
               spacing={4}
