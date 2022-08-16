@@ -1,7 +1,4 @@
 import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, Spinner, VStack } from "@chakra-ui/react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import PayLayout from "../../components/PayLayout";
