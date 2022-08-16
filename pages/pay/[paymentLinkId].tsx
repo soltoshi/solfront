@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, FormControl, FormLabel, Heading, HStack, Input, Spinner, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import PayLayout from "../../components/PayLayout";
@@ -68,9 +68,9 @@ const Pay: NextPageWithLayout = () => {
   return (
     <>
       <VStack>
-        <Heading fontSize={'2xl'}>
+        {/* <Heading fontSize={'2xl'}>
           💸 Pay
-        </Heading>
+        </Heading> */}
 
         {
           isLoading ?
@@ -78,86 +78,88 @@ const Pay: NextPageWithLayout = () => {
             <Spinner/>
            </Box> :
 
-          <HStack spacing={24}>
-            <Box>
-              <PaymentLinkCard
-                link={data.link}
-                productName={data.productName}
-                price={price.toString()}
-                currency={data.productCurrency}
+          <Center h={'100%'}>
+            <HStack spacing={24}>
+              <Box>
+                <PaymentLinkCard
+                  link={data.link}
+                  productName={data.productName}
+                  price={price.toString()}
+                  currency={data.productCurrency}
 
-                offset={true}
-              />
-            </Box>
-
-            {/* Render inputs for collecting customer details START */}
-            <VStack spacing={12} maxWidth={1024}>
-              {
-                data.collectDetails?.email &&
-                <FormControl>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    type={'email'}
-                    placeholder="Your email"
-                    id='email'
-                    name='email'
-                    onChange={(event) => {
-                      event.preventDefault();
-                      setEmail(event.target.value);
-                    }}
-                    value={email}
-                    bgColor={'white'}
-                    boxShadow={'sm'}
-                    border={'hidden'}
-                  />
-                </FormControl>
-              }
-
-              {
-                data.collectDetails?.phone &&
-                <FormControl>
-                  <FormLabel>Phone number</FormLabel>
-                  <Input
-                    type={'text'}
-                    placeholder="Your phone number"
-                    id='phone'
-                    name='phone'
-                    onChange={(event) => {
-                      event.preventDefault();
-                      setPhone(event.target.value);
-                    }}
-                    value={phone}
-                    bgColor={'white'}
-                    boxShadow={'sm'}
-                    border={'hidden'}
-                  />
-                </FormControl>
-              }
-
-              {
-                data.collectDetails?.shippingAddress &&
-                <ShippingAddressForm
-                  onChange={(values) => {
-                    console.log('setting shipping address', JSON.stringify(values));
-                    setShippingAddress(values);
-                  }}
+                  offset={true}
                 />
-              }
-              <Button
-                marginTop={'48px!'}
-                size={'lg'}
-                colorScheme={'green'}
-                width={'fit-content'}
-                onClick={() => {
-                  // submit any details to the pay context
-                  router.push(`/checkout`);
-                }}
-              >
-                🛍 Checkout
-              </Button>
-            </VStack>
-            {/* Render inputs for collecting customer details END */}
-          </HStack>
+              </Box>
+
+              {/* Render inputs for collecting customer details START */}
+              <VStack spacing={12} maxWidth={1024}>
+                {
+                  data.collectDetails?.email &&
+                  <FormControl>
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                      type={'email'}
+                      placeholder="Your email"
+                      id='email'
+                      name='email'
+                      onChange={(event) => {
+                        event.preventDefault();
+                        setEmail(event.target.value);
+                      }}
+                      value={email}
+                      bgColor={'white'}
+                      boxShadow={'sm'}
+                      border={'hidden'}
+                    />
+                  </FormControl>
+                }
+
+                {
+                  data.collectDetails?.phone &&
+                  <FormControl>
+                    <FormLabel>Phone number</FormLabel>
+                    <Input
+                      type={'text'}
+                      placeholder="Your phone number"
+                      id='phone'
+                      name='phone'
+                      onChange={(event) => {
+                        event.preventDefault();
+                        setPhone(event.target.value);
+                      }}
+                      value={phone}
+                      bgColor={'white'}
+                      boxShadow={'sm'}
+                      border={'hidden'}
+                    />
+                  </FormControl>
+                }
+
+                {
+                  data.collectDetails?.shippingAddress &&
+                  <ShippingAddressForm
+                    onChange={(values) => {
+                      console.log('setting shipping address', JSON.stringify(values));
+                      setShippingAddress(values);
+                    }}
+                  />
+                }
+                <Button
+                  marginTop={'48px!'}
+                  size={'lg'}
+                  colorScheme={'green'}
+                  width={'100%'}
+                  onClick={() => {
+                    // submit any details to the pay context
+                    router.push(`/checkout`);
+                  }}
+                >
+                  Checkout
+                </Button>
+              </VStack>
+              {/* Render inputs for collecting customer details END */}
+            </HStack>
+          </Center>
         }
 
 
