@@ -1,12 +1,16 @@
 import { Box, Heading, Link, VStack, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import PayLayout from "../components/PayLayout";
 import { usePayContext } from "../context/PayContext";
 import { NextPageWithLayout } from "./_app";
 
 const Confirmed: NextPageWithLayout = () => {
-  const {paymentLinkSlug} = usePayContext();
+  const {paymentLinkSlug, setPayProgress} = usePayContext();
+
+  useEffect(() => {
+    setPayProgress(100)
+  }, [setPayProgress]);
 
   return (
     <>

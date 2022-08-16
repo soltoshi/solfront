@@ -26,11 +26,15 @@ const Pay: NextPageWithLayout = () => {
 
   // state that renders
   const [data, setData] = useState<PaymentLinkData>({});
-  const {price, setPrice, setPaymentLink, setProduct, setPaymentLinkSlug} = usePayContext();
+  const {price, setPrice, setPaymentLink, setProduct, setPaymentLinkSlug, setPayProgress} = usePayContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // state for collection details
   const {email, setEmail, phone, setPhone, setShippingAddress} = usePayContext();
+
+  useEffect(() => {
+    setPayProgress(33)
+  }, [setPayProgress]);
 
   // Read the payment link details
   useEffect(() => {

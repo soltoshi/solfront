@@ -32,6 +32,9 @@ interface IPayContext {
   setShippingAddress?: (shippingAddress: IShippingAddress) => void,
 
   setTxIdAndCreatePayment?: (txId: string) => void,
+
+  payProgress?: number;
+  setPayProgress?: (progress: number) => void;
 }
 
 const PayContext = createContext<IPayContext>({});
@@ -46,6 +49,8 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [shippingAddress, setShippingAddress] = useState<IShippingAddress>(null);
+
+  const [payProgress, setPayProgress] = useState<number>(0);
 
   const {publicKey} = useWallet();
 
@@ -91,6 +96,8 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
         setPhone,
         shippingAddress,
         setShippingAddress,
+        payProgress,
+        setPayProgress,
       }}
     >
       {children}

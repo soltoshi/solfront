@@ -22,13 +22,17 @@ const Checkout: NextPageWithLayout = () => {
 
   // State to hold API response fields
   const [transaction, setTransaction] = useState<Transaction | null>(null);
-  const {price, paymentLink, product, setTxIdAndCreatePayment, isLocalhost} = usePayContext();
+  const {price, paymentLink, product, setTxIdAndCreatePayment, setPayProgress} = usePayContext();
 
   // Generate the unique reference which will be used for this transaction
   const reference = useMemo(() => Keypair.generate().publicKey, []);
 
   // ref to a div where we'll show the QR code
   const qrRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setPayProgress(66)
+  }, [setPayProgress]);
 
   useEffect(() => {
     async function calculateAndSetSolPrice() {
