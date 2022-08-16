@@ -1,4 +1,4 @@
-import { Container, Heading, VStack, Wrap} from "@chakra-ui/react";
+import { Container, Heading, Skeleton, VStack, Wrap} from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -11,13 +11,17 @@ import { NextPageWithLayout } from "./_app";
 const Dashboard: NextPageWithLayout = () => {
   const [paymentLinks, setPaymentLinks] = useState([]);
   const {merchantId} = useAuthContext();
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
     const loadPaymentLinks = async () => {
       const data = await getPaymentLinks({merchant: merchantId});
       setPaymentLinks(data);
+      setLoading(false);
     };
+
+    setLoading(true);
 
     if (!merchantId) {
       return;
@@ -46,26 +50,29 @@ const Dashboard: NextPageWithLayout = () => {
         >
           Your payment links
         </Heading>
-        <Wrap spacing={24} shouldWrapChildren={true} justify={'center'}>
-          {
-            paymentLinks.map((snapshot) => {
-              const paymentLinkId = snapshot.id;
-              const paymentLinkData = snapshot.data();
-              return (
-                <PaymentLinkCard
-                  key={paymentLinkId}
-                  link={paymentLinkData.link}
-                  productName={paymentLinkData.productName}
-                  price={paymentLinkData.productPrice}
-                  currency={paymentLinkData.productCurrency}
-                  onClick={(event) => {
-                    router.push(`/pymtlink/${paymentLinkId}`);
-                  }}
-                />
-              );
-            })
-          }
-        </Wrap>
+
+        <Skeleton isLoaded={!loading}>
+          <Wrap spacing={24} shouldWrapChildren={true} justify={'center'}>
+            {
+              paymentLinks.map((snapshot) => {
+                const paymentLinkId = snapshot.id;
+                const paymentLinkData = snapshot.data();
+                return (
+                  <PaymentLinkCard
+                    key={paymentLinkId}
+                    link={paymentLinkData.link}
+                    productName={paymentLinkData.productName}
+                    price={paymentLinkData.productPrice}
+                    currency={paymentLinkData.productCurrency}
+                    onClick={(event) => {
+                      router.push(`/pymtlink/${paymentLinkId}`);
+                    }}
+                  />
+                );
+              })
+            }
+          </Wrap>
+        </Skeleton>
       </VStack>
     </>
   );
