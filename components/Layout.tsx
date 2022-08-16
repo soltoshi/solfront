@@ -13,9 +13,12 @@ const Layout = ({children}) => {
           padding={'2rem 2rem'}
           minH={'100vh'}
           bgColor={'gray.50'}
+          maxWidth={'100%'}
         >
           <Center>
-            {children}
+            <Box maxWidth={'75%'}>
+              {children}
+            </Box>
           </Center>
         </Box>
       </main>
