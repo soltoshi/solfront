@@ -4,6 +4,13 @@ import { createContext, useContext, useState, FC, ReactNode, useEffect } from "r
 import * as Payment from "../state/payment";
 import { getCurrentTime } from "../state/util/time";
 
+interface IShippingAddress {
+  streetAddress: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+
 interface IPayContext {
   price?: number,
   setPrice?: (price: number) => void,
@@ -17,6 +24,13 @@ interface IPayContext {
   product?: string,
   setProduct?: (product: string) => void,
 
+  email?: string,
+  setEmail?: (email: string) => void,
+  phone?: string,
+  setPhone?: (phone: string) => void,
+  shippingAddress?: IShippingAddress,
+  setShippingAddress?: (shippingAddress: IShippingAddress) => void,
+
   setTxIdAndCreatePayment?: (txId: string) => void,
 }
 
@@ -28,6 +42,10 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
   const [paymentLinkSlug, setPaymentLinkSlug] = useState<string>(null);
   const [product, setProduct] = useState<string>(null);
   const [txId, setTxId] = useState<string>('');
+  // customer details
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [shippingAddress, setShippingAddress] = useState<IShippingAddress>(null);
 
   const {publicKey} = useWallet();
 
@@ -61,6 +79,13 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
         product,
         setProduct,
         setTxIdAndCreatePayment,
+        // customer details
+        email,
+        setEmail,
+        phone,
+        setPhone,
+        shippingAddress,
+        setShippingAddress,
       }}
     >
       {children}
