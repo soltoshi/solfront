@@ -21,23 +21,6 @@ import NextLink from "next/link";
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { useAuthContext } from '../context/AuthContext';
 
-const Links = ['Solfront.'];
-
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    fontWeight={'bold'}
-    href={'/'}>
-    {children}
-  </Link>
-);
-
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {isLoggedIn, handleSignOut} = useAuthContext();
@@ -74,7 +57,7 @@ export default function NavBar() {
             }}
             bgColor='blue.400'
           >
-            Your payouts
+            View payouts
           </Button>
         </NextLink>
 
@@ -121,9 +104,18 @@ export default function NavBar() {
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+              <Link
+                px={2}
+                py={1}
+                rounded={'md'}
+                _hover={{
+                  textDecoration: 'none',
+                  bg: useColorModeValue('gray.200', 'gray.700'),
+                }}
+                fontWeight={'bold'}
+                href={loggedIn ? '/dashboard' : '/'}>
+                  Solfront.
+              </Link>
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
@@ -132,16 +124,6 @@ export default function NavBar() {
             }
           </Flex>
         </Flex>
-
-        {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
       </Box>
     </>
   );
