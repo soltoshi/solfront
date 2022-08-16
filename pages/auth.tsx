@@ -66,52 +66,6 @@ const Auth: NextPageWithLayout = () => {
               </form>
 
             </Box>
-
-            {/* This is the email + pw login component */}
-
-            {/* <Box
-              rounded={'lg'}
-              bg={useColorModeValue('white', 'gray.700')}
-              boxShadow={'lg'}
-              p={8}>
-
-              <form
-                onSubmit={async (event) => {
-                  event.preventDefault();
-                  createMerchantAuth(email, password).then(() => {
-                    setEmailSent(true);
-                  });
-                }}
-              >
-                <Stack spacing={8}>
-                  <Heading size={'md'}>Register</Heading>
-                  <FormControl id="email">
-                    <FormLabel>Email</FormLabel>
-                    <Input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                  </FormControl>
-                  <FormControl id="email">
-                    <FormLabel>Password</FormLabel>
-                    <Input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                  </FormControl>
-                  <Button
-                    bg={'blue.400'}
-                    color={'white'}
-                    _hover={{
-                      bg: 'blue.500',
-                    }}
-                    type={'submit'}
-                    disabled={emailSent}
-                  >
-                    {
-                      emailSent ?
-                        `✨ Registered ${email} ✨` :
-                        'Register'
-                    }
-                  </Button>
-                </Stack>
-              </form>
-
-            </Box> */}
           </Stack>
         </Flex>
       </Container>
