@@ -60,6 +60,11 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
       walletAddress: publicKey.toString(),
       txId: txId,
       state: Payment.PaymentState.Acquired,
+      paymentDetails: {
+        email,
+        phone,
+        shippingAddress,
+      }
     } as Payment.CreatePaymentParams;
 
     console.log("[pay-context] creating payment with args", JSON.stringify(args));
