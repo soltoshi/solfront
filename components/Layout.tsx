@@ -1,7 +1,7 @@
 import NavBar from "./NavBar"
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { Box } from "@chakra-ui/react";
+import { Text, Box, Center, Link } from "@chakra-ui/react";
 
 const Layout = ({children}) => {
   return (
@@ -11,23 +11,35 @@ const Layout = ({children}) => {
       <main>
         <Box
           padding={'2rem 2rem'}
+          minH={'100vh'}
+          bgColor={'gray.50'}
         >
           {children}
         </Box>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <Box boxShadow={'inner'} borderColor={'gray.50'} height={'100%'}>
+        <footer className={styles.footer}>
+          <Center h={'inherit'}>
+            <Link
+              href="https://solfront.app/"
+              _hover={{'text-decoration': 'none'}}
+              fontSize={'xs'}
+            >
+              Powered by
+              <Text
+                bgGradient={'linear(to-l, #7928CA, #FF0080)'}
+                bgClip={'text'}
+                fontWeight={'bold'}
+                fontSize={'sm'}
+                marginLeft={1}
+              >
+                Solfront
+              </Text>
+            </Link>
+          </Center>
+        </footer>
+      </Box>
     </>
   )
  }
