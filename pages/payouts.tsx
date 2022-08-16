@@ -58,9 +58,19 @@ const Payouts: NextPageWithLayout = () => {
 
   return (
     <>
-      <Center>
-        <VStack spacing={12} width={'fit-content'} alignSelf={'center'}>
-          <Heading fontSize={'2xl'} alignSelf={'flex-start'}>
+      <Center
+        width={'fit-content'}
+        bgColor={'white'}
+        boxShadow={'base'}
+        padding={'2rem 2rem'}
+        rounded={'lg'}
+        marginTop={8}
+      >
+        <VStack spacing={8} width={'fit-content'} alignSelf={'center'}>
+          <Heading fontSize={'2xl'} alignSelf={'flex-start'}
+            bgGradient={'linear(to-l, blue.400, blue.500)'}
+            bgClip={'text'}
+          >
             Your payouts
           </Heading>
 
@@ -72,10 +82,10 @@ const Payouts: NextPageWithLayout = () => {
             <Box>
               <Box>
                 <Text>
-                  Total paid out: {totalPaidOut}
+                  Total paid out: {totalPaidOut.toFixed(2)}
                 </Text>
                 <Text>
-                  Total processing: {totalProcessing}
+                  Total processing: {totalProcessing.toFixed(2)}
                 </Text>
               </Box>
               <TableContainer>
