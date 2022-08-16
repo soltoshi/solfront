@@ -13,7 +13,6 @@ import { shopAddress } from "../lib/addresses";
 import { NextPageWithLayout } from "./_app";
 import PayLayout from "../components/PayLayout";
 
-// TODO: affordance for rendering shipping address
 const Checkout: NextPageWithLayout = () => {
   const router = useRouter();
   const { connection } = useConnection();
@@ -43,7 +42,7 @@ const Checkout: NextPageWithLayout = () => {
     // the QR code instead with a mobile wallet.
     // Solana Pay transfer params
     //
-    // TODO: tried to use Solana Pay transfer request scheme[0] in a button but
+    // note: tried to use Solana Pay transfer request scheme[0] in a button but
     // linking to it results in an error since there's no handler for the protocol
     // in the browser. The behavior I expected was that Phantom would just open.
     // [0] https://docs.solanapay.com/core/transfer-request/merchant-integration
@@ -162,12 +161,6 @@ const Checkout: NextPageWithLayout = () => {
         </Heading>
 
         <Box fontWeight={'bold'} textColor={'red'} marginBottom={24}>
-          <Text>
-            TODO: render additional payment details
-          </Text>
-          <Text>
-            TODO: maybe create payment before checkout / while creating transaction
-          </Text>
           <Text>
             TODO: payment creation should be idemptotent
           </Text>

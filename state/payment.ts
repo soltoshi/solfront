@@ -29,7 +29,6 @@ export type CreatePaymentParams = {
 
   state: PaymentState;
 
-  // TODO: additional details
   paymentDetails: object;
 }
 

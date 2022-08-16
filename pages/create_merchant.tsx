@@ -91,7 +91,6 @@ const CreateMerchant: NextPageWithLayout = () => {
             </VStack>
 
             <Button
-              // TODO: figure out why this margin gets overridden
               marginTop={50}
               type="submit"
             >
