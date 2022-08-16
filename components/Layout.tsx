@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Box } from "@chakra-ui/react";
 
- const Layout = ({children}) => {
+const Layout = ({children}) => {
   return (
     <>
       <NavBar />
