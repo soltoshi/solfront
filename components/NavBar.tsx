@@ -53,10 +53,31 @@ export default function NavBar() {
             colorScheme={'teal'}
             size={'sm'}
             mr={4}
+            _hover={{
+              bgColor: 'teal.500',
+            }}
+            bgColor='teal.400'
             leftIcon={<AddIcon />}>
             Create payment link
           </Button>
         </NextLink>
+
+        <NextLink href='/payouts' passHref>
+          <Button
+            as="a"
+            variant={'solid'}
+            colorScheme={'teal'}
+            size={'sm'}
+            mr={4}
+            _hover={{
+              bgColor: 'blue.500',
+            }}
+            bgColor='blue.400'
+          >
+            Your payouts
+          </Button>
+        </NextLink>
+
         <Menu>
           <MenuButton
             as={Button}
@@ -85,7 +106,7 @@ export default function NavBar() {
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box bg={'gray.50'} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
