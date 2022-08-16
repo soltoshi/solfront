@@ -64,6 +64,9 @@ const CreateMerchant: NextPageWithLayout = () => {
                   name='name'
                   onChange={formik.handleChange}
                   value={formik.values.name}
+                  bgColor={'white'}
+                  boxShadow={'base'}
+                  border={'hidden'}
                 />
                 <FormHelperText>Your Solfront merchant name</FormHelperText>
               </FormControl>
@@ -76,6 +79,9 @@ const CreateMerchant: NextPageWithLayout = () => {
                   name='email'
                   onChange={formik.handleChange}
                   value={formik.values.email}
+                  bgColor={'white'}
+                  boxShadow={'base'}
+                  border={'hidden'}
                 />
                 <FormHelperText>Your business email address</FormHelperText>
               </FormControl>
@@ -88,6 +94,9 @@ const CreateMerchant: NextPageWithLayout = () => {
                   name='bankAccountNumber'
                   onChange={formik.handleChange}
                   value={formik.values.bankAccountNumber}
+                  bgColor={'white'}
+                  boxShadow={'base'}
+                  border={'hidden'}
                 />
                 <FormHelperText>Bank account to send USD to</FormHelperText>
               </FormControl>
