@@ -26,6 +26,8 @@ const Payouts: NextPageWithLayout = () => {
       console.log("number of found payments: ", payments.length);
 
       // 3. TODO: see if states are up to date
+      // for all payments in Processing, we should check how the payout is doing
+      // at circle
 
       // 4. calculate sum
       const [totalPaidOut, totalProcessing] = payments.map((snapshot) => {
