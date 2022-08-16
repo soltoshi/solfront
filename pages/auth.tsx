@@ -1,7 +1,9 @@
 import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import renderWithMerchantLayout from "../components/MerchantLayout";
+import { useAuthContext } from "../context/AuthContext";
 import { sendSignInLinkToMerchantEmail } from "../state/auth";
 import { NextPageWithLayout } from "./_app";
 
@@ -9,6 +11,15 @@ const Auth: NextPageWithLayout = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
+
+  const {isLoggedIn} = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn && isLoggedIn()) {
+      router.push('/dashboard');
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
