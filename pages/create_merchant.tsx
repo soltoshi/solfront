@@ -15,9 +15,12 @@ import { createMerchant } from "../state/merchant";
 import { useAuthContext } from "../context/AuthContext";
 import { NextPageWithLayout } from "./_app";
 import renderWithMerchantLayout from "../components/MerchantLayout";
+import { useRouter } from "next/router";
 
 const CreateMerchant: NextPageWithLayout = () => {
   const {authUid} = useAuthContext();
+
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -34,7 +37,7 @@ const CreateMerchant: NextPageWithLayout = () => {
         authUid: authUid,
       });
 
-      alert(JSON.stringify(values, null, 2));
+      router.push('/dashboard');
     },
   });
 
