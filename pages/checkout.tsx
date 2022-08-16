@@ -238,7 +238,7 @@ const Checkout: NextPageWithLayout = () => {
           </VStack>
 
 
-          <Box
+          {/* <Box
             marginTop={'48px!'}
             textDecoration={'underline'}
           >
@@ -247,7 +247,7 @@ const Checkout: NextPageWithLayout = () => {
             >
               ➡️ Go to confirmation page
             </Link>
-          </Box>
+          </Box> */}
       </VStack>
     </>
   )
