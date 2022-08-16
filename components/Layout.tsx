@@ -14,7 +14,9 @@ const Layout = ({children}) => {
           minH={'100vh'}
           bgColor={'gray.50'}
         >
-          {children}
+          <Center>
+            {children}
+          </Center>
         </Box>
       </main>
 
