@@ -72,6 +72,8 @@ const createPayment = async ({
       payment_details: paymentDetails,
     });
     console.log("Created payment with id", generatedId);
+
+    return generatedId;
   } catch (e) {
     console.error("Error creating payment: ", e);
   }

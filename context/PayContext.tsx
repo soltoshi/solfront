@@ -24,6 +24,8 @@ interface IPayContext {
   product?: string,
   setProduct?: (product: string) => void,
 
+  txId?: string,
+
   email?: string,
   setEmail?: (email: string) => void,
   phone?: string,
@@ -35,6 +37,8 @@ interface IPayContext {
 
   payProgress?: number;
   setPayProgress?: (progress: number) => void;
+
+  paymentId?: string;
 }
 
 const PayContext = createContext<IPayContext>({});
@@ -49,6 +53,7 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [shippingAddress, setShippingAddress] = useState<IShippingAddress>(null);
+  const [paymentId, setPaymentId] = useState<string>('');
 
   const [payProgress, setPayProgress] = useState<number>(0);
 
@@ -62,7 +67,7 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
       created: getCurrentTime(),
       amount: price,
       currency: Payment.Currency.SOL,
-      walletAddress: publicKey.toString(),
+      walletAddress: publicKey?.toString(),
       txId: txId,
       state: Payment.PaymentState.Acquired,
       paymentDetails: {
@@ -74,7 +79,8 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
 
     console.log("[pay-context] creating payment with args", JSON.stringify(args));
 
-    await Payment.createPayment(args);
+    const paymentId = await Payment.createPayment(args);
+    setPaymentId(paymentId);
   };
 
   return (
@@ -88,6 +94,7 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
         setPaymentLinkSlug,
         product,
         setProduct,
+        txId,
         setTxIdAndCreatePayment,
         // customer details
         email,
@@ -98,6 +105,7 @@ export const PayContextProvider: FC<{children: ReactNode}> = ({ children }) => {
         setShippingAddress,
         payProgress,
         setPayProgress,
+        paymentId,
       }}
     >
       {children}
