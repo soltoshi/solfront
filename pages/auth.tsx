@@ -30,7 +30,7 @@ const Auth: NextPageWithLayout = () => {
             <Box
               rounded={'lg'}
               bg={useColorModeValue('white', 'gray.700')}
-              boxShadow={'lg'}
+              boxShadow={'base'}
               p={8}>
 
               <form
@@ -42,10 +42,13 @@ const Auth: NextPageWithLayout = () => {
                 }}
               >
                 <Stack spacing={8}>
-                  <Heading size={'md'}>Get magic link</Heading>
+                  {/* <Heading size={'md'}>Get magic link</Heading> */}
                   <FormControl id="email">
                     <FormLabel>Email</FormLabel>
-                    <Input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <Input
+                      // bgColor={"whiteAlpha.100"}
+                      placeholder={'Your email'}
+                      type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                   </FormControl>
                   <Button
                     bg={'blue.400'}
