@@ -42,6 +42,17 @@ const createPayment = async ({
   currency,
   paymentDetails={},
 }: CreatePaymentParams) => {
+
+  // idempotency check
+  const existingPayment = await getPaymentByTransactionId({transactionId: txId});
+  if (existingPayment.length > 0) {
+    console.error("Payment already exists for transaction id", {
+      payment: existingPayment[0].id,
+      txId,
+    });
+    return;
+  }
+
   try {
     const generatedId = generateDocumentId(COLLECTION_PREFIX);
 
@@ -63,6 +74,20 @@ const createPayment = async ({
     console.log("Created payment with id", generatedId);
   } catch (e) {
     console.error("Error creating payment: ", e);
+  }
+}
+
+const getPaymentByTransactionId = async({transactionId}) => {
+  try {
+    const filters = [where("transaction_id", "==", transactionId)];
+    const q = query(collection(db, COLLECTION_NAME), ...filters);
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((docSnapshot) => {
+      return docSnapshot;
+    });
+  } catch (e) {
+    console.error("Error loading payments with tx id", e);
   }
 }
 
