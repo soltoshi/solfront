@@ -169,7 +169,7 @@ const Checkout: NextPageWithLayout = () => {
   return (
     <>
       <VStack spacing={12}>
-        <Alert status={'info'} fontSize={'xs'} marginTop={8} bgColor={'gray.100'} width={'auto'} rounded={'md'}>
+        <Alert status={'info'} fontSize={'xs'} bgColor={'gray.100'} width={'auto'} rounded={'md'}>
           Pay using a browser wallet or mobile wallet via
           <Link
             marginLeft={1}
