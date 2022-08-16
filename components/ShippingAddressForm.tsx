@@ -39,7 +39,7 @@ export default function ShippingAddressForm(props) {
               onChange={formik.handleChange}
               value={formik.values.streetAddress}
               bgColor={'white'}
-              boxShadow={'sm'}
+              boxShadow={'base'}
               border={'hidden'}
             />
           </FormControl>
@@ -54,7 +54,7 @@ export default function ShippingAddressForm(props) {
               onChange={formik.handleChange}
               value={formik.values.city}
               bgColor={'white'}
-              boxShadow={'sm'}
+              boxShadow={'base'}
               border={'hidden'}
             />
           </FormControl>
@@ -70,7 +70,7 @@ export default function ShippingAddressForm(props) {
                 onChange={formik.handleChange}
                 value={formik.values.country}
                 bgColor={'white'}
-                boxShadow={'sm'}
+                boxShadow={'base'}
                 border={'hidden'}
               />
             </FormControl>
@@ -85,7 +85,7 @@ export default function ShippingAddressForm(props) {
                 onChange={formik.handleChange}
                 value={formik.values.postalCode}
                 bgColor={'white'}
-                boxShadow={'sm'}
+                boxShadow={'base'}
                 border={'hidden'}
               />
             </FormControl>

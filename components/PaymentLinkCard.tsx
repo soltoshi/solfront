@@ -69,7 +69,7 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
         maxW={'330px'}
         w={'full'}
         bg={useColorModeValue('white', 'gray.800')}
-        boxShadow={'md'}
+        boxShadow={'sm'}
         rounded={'lg'}
         pos={'relative'}
         zIndex={1}>

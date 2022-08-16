@@ -108,7 +108,7 @@ const Pay: NextPageWithLayout = () => {
                       }}
                       value={email}
                       bgColor={'white'}
-                      boxShadow={'sm'}
+                      boxShadow={'base'}
                       border={'hidden'}
                     />
                   </FormControl>
@@ -129,7 +129,7 @@ const Pay: NextPageWithLayout = () => {
                       }}
                       value={phone}
                       bgColor={'white'}
-                      boxShadow={'sm'}
+                      boxShadow={'base'}
                       border={'hidden'}
                     />
                   </FormControl>
