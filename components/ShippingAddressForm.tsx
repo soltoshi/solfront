@@ -1,4 +1,4 @@
-import { VStack, FormControl, FormLabel, Input, FormHelperText, Select, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, CheckboxGroup, Stack, Checkbox, Button } from "@chakra-ui/react";
+import { VStack, FormControl, FormLabel, Input, FormHelperText, Select, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, CheckboxGroup, Stack, Checkbox, Button, Heading } from "@chakra-ui/react";
 import { useFormik } from "formik";
 
 export default function ShippingAddressForm(props) {
@@ -16,7 +16,10 @@ export default function ShippingAddressForm(props) {
   });
 
   return (
-    <VStack>
+    <VStack spacing={8}>
+      <Heading alignSelf={'flex-start'} size={'md'}>
+        Shipping address
+      </Heading>
       <form
         onSubmit={(event) => {
           event.preventDefault();
