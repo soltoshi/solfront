@@ -91,7 +91,7 @@ const Pay: NextPageWithLayout = () => {
             </Box>
 
             {/* Render inputs for collecting customer details START */}
-            <VStack spacing={12} width={'fit-content'}>
+            <VStack spacing={12} maxWidth={1024}>
               {
                 data.collectDetails?.email &&
                 <FormControl>
@@ -106,6 +106,9 @@ const Pay: NextPageWithLayout = () => {
                       setEmail(event.target.value);
                     }}
                     value={email}
+                    bgColor={'white'}
+                    boxShadow={'sm'}
+                    border={'hidden'}
                   />
                 </FormControl>
               }
@@ -124,6 +127,9 @@ const Pay: NextPageWithLayout = () => {
                       setPhone(event.target.value);
                     }}
                     value={phone}
+                    bgColor={'white'}
+                    boxShadow={'sm'}
+                    border={'hidden'}
                   />
                 </FormControl>
               }
