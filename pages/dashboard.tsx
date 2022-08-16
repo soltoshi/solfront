@@ -1,4 +1,4 @@
-import { Container, Heading, Wrap} from "@chakra-ui/react";
+import { Container, Heading, VStack, Wrap} from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -39,11 +39,14 @@ const Dashboard: NextPageWithLayout = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container maxW='' centerContent={true}>
-        <Heading as='h3' size='lg' marginBottom='32px'>
+      <VStack spacing={16}>
+        <Heading as='h3' size='lg'
+          bgGradient={'linear(to-l, #7928CA, #FF0080)'}
+          bgClip={'text'}
+        >
           Your payment links
         </Heading>
-        <Wrap spacing={24} shouldWrapChildren={true} align='center'>
+        <Wrap spacing={24} shouldWrapChildren={true} justify={'center'}>
           {
             paymentLinks.map((snapshot) => {
               const paymentLinkId = snapshot.id;
@@ -63,7 +66,7 @@ const Dashboard: NextPageWithLayout = () => {
             })
           }
         </Wrap>
-      </Container>
+      </VStack>
     </>
   );
 }
