@@ -70,7 +70,7 @@ const CreateLink: NextPageWithLayout = () => {
         boxShadow={'lg'}
         padding={'2rem 2rem'}
         width={'50vh'}
-        rounded={'lg'}
+        rounded={'xl'}
         marginTop={8}
       >
         <VStack>

@@ -63,7 +63,7 @@ const Payouts: NextPageWithLayout = () => {
         bgColor={'white'}
         boxShadow={'base'}
         padding={'2rem 2rem'}
-        rounded={'lg'}
+        rounded={'xl'}
         marginTop={8}
       >
         <VStack spacing={8} width={'fit-content'} alignSelf={'center'}>

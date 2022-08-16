@@ -34,7 +34,7 @@ export default function NavBar() {
             as="a"
             variant={'solid'}
             colorScheme={'teal'}
-            size={'sm'}
+            size={'md'}
             mr={4}
             _hover={{
               bgColor: 'teal.500',
@@ -50,7 +50,7 @@ export default function NavBar() {
             as="a"
             variant={'solid'}
             colorScheme={'teal'}
-            size={'sm'}
+            size={'md'}
             mr={4}
             _hover={{
               bgColor: 'blue.500',
@@ -64,19 +64,21 @@ export default function NavBar() {
         <Menu>
           <MenuButton
             as={Button}
-            rounded={'full'}
             variant={'link'}
             cursor={'pointer'}
-            minW={0}>
-            <Avatar
-              size={'sm'}
-              src={
-                'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-              }
+            minW={0}
+            boxSize={12}
+            _hover={{
+              textDecoration: 'none',
+              bg: 'gray.200',
+            }}
+          >
+            <HamburgerIcon
+              color={'black'}
+              boxSize={4}
             />
           </MenuButton>
           <MenuList>
-            <MenuDivider />
             <MenuItem onClick={handleSignOut}>
               Sign out
             </MenuItem>
@@ -89,15 +91,8 @@ export default function NavBar() {
 
   return (
     <>
-      <Box bg={'gray.50'} px={4}>
+      <Box bg={'gray.50'} px={4} padding={8}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <IconButton
-            size={'md'}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
-          />
           <HStack spacing={8} alignItems={'center'}>
             {/* <Box>🚪</Box> */}
             <HStack
@@ -105,8 +100,8 @@ export default function NavBar() {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               <Link
-                px={2}
-                py={1}
+                px={8}
+                py={4}
                 rounded={'md'}
                 _hover={{
                   textDecoration: 'none',
