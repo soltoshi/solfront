@@ -56,7 +56,9 @@ const Confirmed: NextPageWithLayout = () => {
               >
                 View your transaction on Solscan
               </Link>
-
+              <Text fontFamily={'mono'} background={'gray.50'} rounded={'lg'} padding={2}>
+                {paymentId}
+              </Text>
             </VStack>
           </Alert>
 
