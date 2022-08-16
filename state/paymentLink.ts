@@ -12,6 +12,11 @@ interface CreatePaymentLinkParams {
   productCurrency: string;
   productName: string;
   productPrice: number;
+  collectDetails: {
+    email: boolean;
+    phone: boolean;
+    shippingAddress: boolean;
+  };
 }
 
 interface GetPaymentLinkParams {
@@ -23,6 +28,7 @@ const createPaymentLink = async ({
   productCurrency,
   productName,
   productPrice,
+  collectDetails,
 }: CreatePaymentLinkParams) => {
   if (!merchant) {
     throw new Error("Must have merchant set to create payment link");
@@ -37,6 +43,7 @@ const createPaymentLink = async ({
       // TODO: normalize product price
       productPrice: productPrice,
       link: `${PAYMENT_LINK_DOMAIN}/${generatePaymentLinkSlug()}`,
+      collectDetails: collectDetails,
     });
     console.log("Created payment link with id", generatedId);
   } catch (e) {

@@ -2,6 +2,8 @@ import Head from "next/head";
 
 import {
    Button,
+   Checkbox,
+   CheckboxGroup,
    FormControl,
    FormHelperText,
    FormLabel,
@@ -13,19 +15,25 @@ import {
    NumberInputField,
    NumberInputStepper,
    Select,
+   Stack,
    VStack
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { createPaymentLink } from "../state/paymentLink";
-import { TODO_MERCHANT } from "../state/constants";
 import { NextPageWithLayout } from "./_app";
 import renderWithMerchantLayout from "../components/MerchantLayout";
 import { useAuthContext } from "../context/AuthContext";
+import { useState } from "react";
 
 const DEFAULT_PRICE_VALUE = 10.00
 
 const CreateLink: NextPageWithLayout = () => {
   const {merchantId} = useAuthContext();
+  const [collectDetails, setCollectDetails] = useState({
+    email: false,
+    phone: false,
+    shippingAddress: false,
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -40,6 +48,8 @@ const CreateLink: NextPageWithLayout = () => {
         productCurrency: values.priceCurrency,
         productName: values.product,
         productPrice: values.price,
+        // we get this state from a different hook
+        collectDetails: collectDetails,
       });
 
       alert(JSON.stringify(values, null, 2));
@@ -104,8 +114,31 @@ const CreateLink: NextPageWithLayout = () => {
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
+                <FormHelperText>Price to charge</FormHelperText>
               </FormControl>
             </VStack>
+
+            <FormControl marginTop={'16px'}>
+              <FormLabel>Collect details</FormLabel>
+              <CheckboxGroup colorScheme='gray' defaultValue={[]}>
+                <Stack spacing={[1, 5]} direction={['column', 'row']}>
+                  <Checkbox onChange={() => {
+                    setCollectDetails({...collectDetails, ...{email: !collectDetails.email}});
+                    console.log(collectDetails);
+
+                  }}>Email</Checkbox>
+                  <Checkbox onChange={() => {
+                    setCollectDetails({...collectDetails, ...{phone: !collectDetails.phone}});
+                    console.log(collectDetails);
+                  }}>Phone number</Checkbox>
+                  <Checkbox onChange={() => {
+                    setCollectDetails({...collectDetails, ...{shippingAddress: !collectDetails.shippingAddress}});
+                    console.log(collectDetails);
+                  }}>Shipping address</Checkbox>
+                </Stack>
+              </CheckboxGroup>
+              <FormHelperText>Information to collect from your customer</FormHelperText>
+            </FormControl>
 
             <Button
               // TODO: figure out why this margin gets overridden
