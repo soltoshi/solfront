@@ -68,7 +68,7 @@ const CreateLink: NextPageWithLayout = () => {
       <Box
         bgColor={'whiteAlpha.900'}
         boxShadow={'lg'}
-        padding={'2rem 2rem'}
+        padding={'4rem 2rem'}
         width={'50vh'}
         rounded={'xl'}
         marginTop={8}
@@ -163,14 +163,13 @@ const CreateLink: NextPageWithLayout = () => {
             <Button
               marginTop={50}
               type="submit"
-              // colorScheme={'blue'}
               width={'100%'}
               _hover={{
                 bgGradient: 'linear(to-l, teal.400, teal.500)',
                 textColor: 'white',
                 bgClip: 'border-box'
               }}
-              bgGradient={'linear(to-l, teal.400, teal.500)'}
+              bgGradient={'linear(to-l, teal.500, teal.400)'}
               textColor={'white'}
             >
               Create payment link
