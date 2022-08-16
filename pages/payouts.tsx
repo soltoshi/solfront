@@ -79,8 +79,8 @@ const Payouts: NextPageWithLayout = () => {
             <Box width="100%" display="flex" justifyContent="center" marginTop={'48px!'}>
               <Spinner/>
             </Box> :
-            <Box>
-              <Box>
+            <VStack spacing={8}>
+              <Box alignSelf={'flex-start'}>
                 <Text>
                   Total paid out: {totalPaidOut.toFixed(2)}
                 </Text>
@@ -88,7 +88,10 @@ const Payouts: NextPageWithLayout = () => {
                   Total processing: {totalProcessing.toFixed(2)}
                 </Text>
               </Box>
-              <TableContainer>
+              <TableContainer
+                boxShadow={'sm'}
+                rounded='lg'
+              >
                 <Table variant='simple'>
                   <Thead>
                     <Tr>
@@ -123,7 +126,7 @@ const Payouts: NextPageWithLayout = () => {
 
                 </Table>
               </TableContainer>
-            </Box>
+            </VStack>
           }
 
         </VStack>
