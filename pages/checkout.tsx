@@ -154,18 +154,6 @@ const Checkout: NextPageWithLayout = () => {
     }
   }, [])
 
-  if (!publicKey) {
-    return (
-      <div className='flex flex-col gap-8 items-center'>
-        <div><Link href='/buy'>Cancel</Link></div>
-
-        <WalletMultiButton />
-
-        <p>You need to connect your wallet to make transactions</p>
-      </div>
-    )
-  }
-
   return (
     <>
       <VStack>
@@ -183,6 +171,10 @@ const Checkout: NextPageWithLayout = () => {
           <Text>
             TODO: payment creation should be idemptotent
           </Text>
+        </Box>
+
+        <Box marginTop={'48px!'}>
+          <WalletMultiButton />
         </Box>
 
         {/* We render the QR code for the customer to scan */}
