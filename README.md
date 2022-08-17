@@ -3,7 +3,7 @@ This project was built as part of Solana's Summer Hackathon 2022[0].
 
 Presentation: https://docs.google.com/presentation/d/13k1g7IsxYn0iBoLFwF22iavdKdr35Ox-XQQmxpP1gww/edit#slide=id.p
 
-## Motivation
+## 💡 Motivation
 
 Today, it’s not easy for merchants to accept crypto payments. Although there are existing solutions, they involve coding and/or complex integrations many smaller businesses do not have the time or resources for. Solfront aims to help small business connect with the next wave of crypto customers.
 
@@ -19,7 +19,7 @@ Together, you and other merchants will build the foundation for new incentive pr
 
 Solfront will expand Solana’s ecosystem by bringing Solana Pay to a ubiquitous payment surface that is as easy as sending a lightweight payment link. By doing this, Solfront will close the gap between ecommerce as we know it today and the future of commerce powered by Solana.
 
-# Integrations
+## 🤝 Integrations
 - Pyth network for real time SOL-USD quotes (and soon more pairs once we support more pay-in tokens)
 - Circle API for payouts
 - Probably jup.ag and/or FTX once we're moving money on mainnet
