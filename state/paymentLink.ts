@@ -45,7 +45,9 @@ const createPaymentLink = async ({
       link: `${PAYMENT_LINK_DOMAIN}/${generatePaymentLinkSlug()}`,
       collectDetails: collectDetails,
     });
-    console.log("Created payment link with id", generatedId);
+    console.log("Created payment link with id and merchant", {
+      generatedId, merchant,
+    });
   } catch (e) {
     console.error("Error creating payment link: ", e);
   }

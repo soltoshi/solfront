@@ -1,4 +1,4 @@
-import { setDoc, doc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
+import { setDoc, doc, getDocs, collection, query, where, orderBy, updateDoc } from "firebase/firestore";
 import db from "./database";
 import { loadPaymentLink } from "./paymentLink";
 import generateDocumentId from "./util/generateDocumentId";
@@ -79,6 +79,14 @@ const createPayment = async ({
   }
 }
 
+const updatePayment = async ({id, state, circle_payout_id}) => {
+  await updateDoc(doc(db, COLLECTION_NAME, id), {
+    state,
+    circle_payout_id
+  });
+  console.log("Updated payment with id", id);
+}
+
 const getPaymentByTransactionId = async({transactionId}) => {
   try {
     const filters = [where("transaction_id", "==", transactionId)];
@@ -117,4 +125,5 @@ const getPayments = async({merchant, paymentLink, orderByState=false}) => {
 export {
   createPayment,
   getPayments,
+  updatePayment,
 };

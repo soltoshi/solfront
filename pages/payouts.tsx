@@ -1,5 +1,6 @@
 import { Text, Center, VStack, Heading, Spinner, TableContainer, Table, Thead, Tr, Th, Td, Box } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import formatPaymentState from "../components/formatPaymentState";
 import renderWithMerchantLayout from "../components/MerchantLayout";
 import { useAuthContext } from "../context/AuthContext";
 import { Currency, getPayments, PaymentState } from "../state/payment";
@@ -30,20 +31,28 @@ const Payouts: NextPageWithLayout = () => {
       // at circle
 
       // 4. calculate sum
-      const [totalPaidOut, totalProcessing] = payments.map((snapshot) => {
-        const data = snapshot.data();
-        let [paidOut, processing] = [0, 0];
-        if (data.state == PaymentState.Fulfilled) {
-          paidOut = data.amount;
-        } else if (data.state == PaymentState.Processing) {
-          processing = data.amount;
-        }
-        return [paidOut, processing];
-      }).reduce((prev, curr) => [prev[0] + curr[0], prev[1] + curr[1]]);
+      if (payments.length > 0) {
+        const [totalPaidOut, totalProcessing] = payments.map((snapshot) => {
+          const data = snapshot.data();
+          let [paidOut, processing] = [0, 0];
+          if (data.state == PaymentState.Fulfilled) {
+            paidOut = data.amount;
+          } else if (data.state == PaymentState.Processing) {
+            processing = data.amount;
+          }
+          return [paidOut, processing];
+        }).reduce((prev, curr) => [prev[0] + curr[0], prev[1] + curr[1]]);
+      }
 
       setTotalPaidOut(totalPaidOut);
       setTotalProcessing(totalProcessing);
       setPayoutsData(payments);
+
+      console.log({
+        totalProcessing,
+        totalPaidOut
+      });
+
 
       setIsLoading(false);
     };
@@ -82,10 +91,16 @@ const Payouts: NextPageWithLayout = () => {
             <VStack spacing={8}>
               <Box alignSelf={'flex-start'}>
                 <Text>
-                  Total paid out: {totalPaidOut.toFixed(2)}
+                  Total paid out:
+                  <Box bgColor={"green.100"} borderRadius={4} display={'inline-block'} marginLeft={2} padding={1} fontFamily={'mono'}>
+                    {totalPaidOut.toFixed(2)}
+                  </Box>
                 </Text>
-                <Text>
-                  Total processing: {totalProcessing.toFixed(2)}
+                <Text marginTop={2}>
+                  Total processing:
+                  <Box bgColor={"cyan.100"} borderRadius={4} display={'inline-block'} marginLeft={2} padding={1} fontFamily={'mono'}>
+                    {totalProcessing.toFixed(2)}
+                  </Box>
                 </Text>
               </Box>
               <TableContainer
@@ -100,6 +115,7 @@ const Payouts: NextPageWithLayout = () => {
                       <Th isNumeric>Amount</Th>
                       <Th>Currency</Th>
                       <Th>State</Th>
+                      <Th>Circle Payout ID</Th>
                     </Tr>
                   </Thead>
 
@@ -111,14 +127,19 @@ const Payouts: NextPageWithLayout = () => {
                           key={snapshot.id}
                         >
                           <Td>
-                          <Box bgColor={"gray.100"} borderRadius={4} display={'inline-block'} marginLeft={2} padding={2} fontFamily={'mono'}>
-                              {snapshot.id}
-                          </Box>
+                            <Box bgColor={"gray.100"} borderRadius={4} display={'inline-block'} marginLeft={2} padding={2} fontFamily={'mono'}>
+                                {snapshot.id}
+                            </Box>
                           </Td>
                           <Td>{renderEpochSeconds(data.created)}</Td>
                           <Td isNumeric>{data.amount}</Td>
                           <Td>{Currency[data.currency]}</Td>
-                          <Td>{PaymentState[data.state]}</Td>
+                          <Td>{formatPaymentState(data.state)}</Td>
+                          <Td>
+                            <Box bgColor={"gray.100"} borderRadius={4} display={'inline-block'} marginLeft={2} padding={2} fontFamily={'mono'}>
+                                {data.circle_payout_id || 'null'}
+                            </Box>
+                          </Td>
                         </Tr>
                       )
                     })
