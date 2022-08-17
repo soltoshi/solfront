@@ -21,7 +21,7 @@ import renderWithMerchantLayout from "../components/MerchantLayout";
 import { useRouter } from "next/router";
 
 const CreateMerchant: NextPageWithLayout = () => {
-  const {authUid} = useAuthContext();
+  const {authUid, setMerchantId} = useAuthContext();
 
   const router = useRouter();
 
@@ -31,14 +31,15 @@ const CreateMerchant: NextPageWithLayout = () => {
       email: '',
       bankAccountNumber: '',
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       // TODO: handle form validation
-      createMerchant({
+      const merchantId = await createMerchant({
         name: values.name,
         email: values.email,
         bankAccountNumber: values.bankAccountNumber,
         authUid: authUid,
       });
+      setMerchantId(merchantId);
 
       router.push('/dashboard');
     },

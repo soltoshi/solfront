@@ -72,10 +72,10 @@ async function sendPayout(data) {
     },
     amount: {
       currency: "USD",
-      amount: "1.00"
+      amount: "50.00"
     },
     metadata: {
-      beneficiaryEmail: "john.smith@email.com"
+      beneficiaryEmail: "solfrontapp@gmail.com"
     }
   })
 

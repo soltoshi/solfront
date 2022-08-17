@@ -4,11 +4,11 @@ const configOutput = dotenv.config({path: "/Users/struong/soltoshi/solfront/.env
 import CircleApi from "../state/circle_api";
 
 async function main() {
-  // const bankAccountResponse = await createBankAccount();
+  const bankAccountResponse = await CircleApi.createBankAccount();
 
-  // await sendPayout({bankAccountId: bankAccountResponse.data.id});
+  await CircleApi.sendPayout({bankAccountId: bankAccountResponse.data.id});
 
-  // await listPayouts();
+  await CircleApi.listPayouts();
   // await listBalances();
 
   // await transferOut({

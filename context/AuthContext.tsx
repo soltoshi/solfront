@@ -5,6 +5,7 @@ import { getMerchantByAuthUserId } from "../state/merchant";
 interface IAuthContext {
   authUid?: string,
   setAuthUid?: (authUid: string) => void,
+  setMerchantId?: (merchantId: string) => void,
   merchantId?: string,
   isLoggedIn?: () => boolean;
   handleSignOut?: () => void;
@@ -77,6 +78,7 @@ export const AuthContextProvider: FC<{children: ReactNode}> = ({ children }) => 
         authUid,
         setAuthUid,
         merchantId,
+        setMerchantId,
         isLoggedIn,
         handleSignOut,
       }}

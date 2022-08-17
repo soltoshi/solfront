@@ -25,6 +25,7 @@ import { NextPageWithLayout } from "./_app";
 import renderWithMerchantLayout from "../components/MerchantLayout";
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const DEFAULT_PRICE_VALUE = 10.00
 
@@ -35,6 +36,8 @@ const CreateLink: NextPageWithLayout = () => {
     phone: false,
     shippingAddress: false,
   });
+
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -52,8 +55,7 @@ const CreateLink: NextPageWithLayout = () => {
         // we get this state from a different hook
         collectDetails: collectDetails,
       });
-
-      alert(JSON.stringify(values, null, 2));
+      router.push('/dashboard');
     },
   });
 

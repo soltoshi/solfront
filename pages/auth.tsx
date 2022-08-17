@@ -12,11 +12,11 @@ const Auth: NextPageWithLayout = () => {
   const [password, setPassword] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
 
-  const {isLoggedIn} = useAuthContext();
+  const {isLoggedIn, merchantId} = useAuthContext();
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoggedIn && isLoggedIn()) {
+    if (isLoggedIn && isLoggedIn() && merchantId) {
       router.push('/dashboard');
     }
   }, [isLoggedIn]);
