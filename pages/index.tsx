@@ -1,8 +1,9 @@
-import { Box, Center, Container, Text, Heading, Link, VStack} from "@chakra-ui/react";
+import { Box, Center, Container, Text, Heading, Link, VStack, HStack} from "@chakra-ui/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import LandingNav from "../components/LandingNav";
+import { GithubIcon, TwitterIcon } from "../components/icons";
 
 const Home: NextPage = () => {
   return (
@@ -41,32 +42,43 @@ const Home: NextPage = () => {
             >{" "}Solana</Text>
           </Heading>
 
-          <Text width={'80vh'} fontSize={'2xl'} textAlign={'center'} fontWeight={'normal'}>
-            Solfront enables you to accept Solana payments and receive USD without writing a single line of code.
+          <Text width={'60vh'} fontSize={'2xl'} textAlign={'center'} fontWeight={'medium'} color={'gray.700'}>
+            Accept Solana payments and receive USD without writing a single line
+            of code. Engage your customers by tailoring unique NFT-powered
+            incentive programs with Solfront.
           </Text>
         </VStack>
       </Box>
-      <Box boxShadow={'inner'} bgColor={'gray.50'} borderColor={'gray.50'} height={'100%'}>
-        <footer className={styles.footer}>
-          <Center h={'inherit'}>
-            <Link
-              href="https://solfront.app/"
-              _hover={{'text-decoration': 'none'}}
-              fontSize={'xs'}
+      <Box boxShadow={'inner'} bgColor={'gray.50'} borderColor={'gray.50'}>
+        <VStack spacing={0.5} py={6} ml={4}>
+          <Heading size={'sm'} textAlign={'left'}>
+            Made with ❤️ for web3
+          </Heading>
+          <Link
+            href="https://solana.com/summercamp"
+            _hover={{'text-decoration': 'none'}}
+            fontSize={'xs'}
+          >
+            Brought to you by
+            <Text
+              as={'span'}
+              bgGradient={'linear(to-l, #03ce8f, #5089c7, #9649fd)'}
+              bgClip={'text'}
+              fontWeight={'bold'}
             >
-              Welcome to
-              <Text
-                bgGradient={'linear(to-l, #7928CA, #FF0080)'}
-                bgClip={'text'}
-                fontWeight={'bold'}
-                fontSize={'sm'}
-                marginLeft={1}
-              >
-                Solfront
-              </Text>
+              {" "}Solana Summer Camp
+            </Text>
+          </Link>
+
+          <HStack spacing={2}>
+            <Link href="https://twitter.com/usesolfront">
+              <TwitterIcon color={'gray.700'}/>
             </Link>
-          </Center>
-        </footer>
+            <Link href="https://github.com/soltoshi/">
+              <GithubIcon color={'gray.700'}/>
+            </Link>
+          </HStack>
+        </VStack>
       </Box>
     </>
   );
