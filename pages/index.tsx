@@ -5,6 +5,22 @@ import styles from "../styles/Home.module.css";
 import LandingNav from "../components/LandingNav";
 import { GithubIcon, TwitterIcon } from "../components/icons";
 
+const BulletCard = ({children}) => {
+  return (
+    <VStack
+      spacing={3}
+      boxShadow={'base'}
+      rounded={'base'}
+      bgColor={'whiteAlpha.500'}
+      padding={4}
+      height={'33vh'}
+      width={'25vh'}
+    >
+      {children}
+    </VStack>
+  );
+}
+
 const Home: NextPage = () => {
   return (
     <>
@@ -19,9 +35,11 @@ const Home: NextPage = () => {
       <Box
         padding={'2rem 2rem'}
         bgColor={'gray.50'}
-        height={'100vh'}
+        height={'80vh'}
       >
         <VStack spacing={12}>
+
+          {/* HERO */}
           <Heading width={'80vh'} size={'3xl'} textAlign={'center'} display={'inline-block'}>
             The{" "}
             <Text
@@ -47,9 +65,63 @@ const Home: NextPage = () => {
             of code. Engage your customers by tailoring unique NFT-powered
             incentive programs with Solfront.
           </Text>
+
+          {/* HOW IT WORKS
+          <VStack spacing={12}>
+            <Heading
+              size={'lg'}
+              fontWeight={'bold'}
+            >
+              How it works
+            </Heading>
+            <HStack spacing={8}>
+              <BulletCard>
+                <Text
+                  fontSize={'lg'}
+                  fontWeight={'bold'}
+                >
+                  Create a payment link
+                </Text>
+                <Text
+                  fontSize={'sm'}
+                >
+
+                  Create a payment link to charge for your product. You can send
+                  these links to your customers to collect payment.
+                </Text>
+              </BulletCard>
+
+              <BulletCard>
+                <Text
+                  fontSize={'lg'}
+                  fontWeight={'bold'}
+                >
+                  Two
+                </Text>
+                <Text>
+                  fl;kasjdf;lkajsd;lkfjkal;sjdf;lkjflkj
+                </Text>
+              </BulletCard>
+
+              <BulletCard>
+                <Text
+                  fontSize={'lg'}
+                  fontWeight={'bold'}
+                >
+                  Three
+                </Text>
+                <Text>
+                  fl;kasjdf;lkajsd;lkfjkal;sjdf;lkjflkj
+                </Text>
+              </BulletCard>
+            </HStack>
+          </VStack> */}
         </VStack>
       </Box>
-      <Box boxShadow={'inner'} bgColor={'gray.50'} borderColor={'gray.50'}>
+
+      {/* FOOTER */}
+
+      <Box boxShadow={'inner'} bgColor={'gray.50'} borderColor={'gray.50'} height={'20vh'}>
         <VStack spacing={0.5} py={6} ml={4}>
           <Heading size={'sm'} textAlign={'left'}>
             Made with ❤️ for web3
