@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { useEffect, useState } from 'react';
 
 // TODO: make this image configurable
 const IMAGE = 'https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80';
@@ -45,11 +46,21 @@ function getSlugFromLink(link: string) {
 
 export default function PaymentLinkCard(props: PaymentLinkCardProps) {
   const router = useRouter();
+  const [payLinkHref, setPayLinkHref] = useState<string>('');
 
   const optCursorProp = {} as {cursor?: string};
   if (props.onClick) {
     optCursorProp.cursor = 'pointer';
   }
+
+  useEffect(() => {
+    // we do this check since we test locally
+    if ('localhost' == window.location.hostname) {
+      setPayLinkHref(`http://localhost:3000/pay/${getSlugFromLink(props.link)}`);
+    } else {
+      setPayLinkHref(`https://${props.link}`)
+    }
+  }, [props.link])
 
   return (
     <Center
@@ -106,12 +117,7 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
         </Box>
         <Stack pt={10} align={'center'}>
           <Text color={'gray.500'} fontSize={'sm'}>
-            <NextLink href={
-              // we do this check since we test locally
-              window.location.hostname == 'localhost' ?
-                `http://localhost:3000/pay/${getSlugFromLink(props.link)}` :
-                `https://${props.link}`
-              }>
+            <NextLink href={payLinkHref}>
               {props.link}
             </NextLink>
           </Text>
