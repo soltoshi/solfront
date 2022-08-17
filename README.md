@@ -19,5 +19,15 @@ Together, you and other merchants will build the foundation for new incentive pr
 
 Solfront will expand Solana’s ecosystem by bringing Solana Pay to a ubiquitous payment surface that is as easy as sending a lightweight payment link. By doing this, Solfront will close the gap between ecommerce as we know it today and the future of commerce powered by Solana.
 
+# Integrations
+- Pyth network for real time SOL-USD quotes (and soon more pairs once we support more pay-in tokens)
+- Circle API for payouts
+- Probably jup.ag and/or FTX once we're moving money on mainnet
+
+# Ongoing issues
+- Magic link auth does not work on prod yet
+- Fulfillment flow and details are not fully coded out yet in the UI for the merchant
+- Need to allow product image upload
+
 ---
 [0] https://solana.com/summercamp
