@@ -63,8 +63,12 @@ export default function LandingNav() {
                 as="a"
                 variant={'solid'}
                 colorScheme={'teal'}
-                size={'sm'}
+                size={'md'}
                 mr={4}
+                _hover={{
+                  bgColor: 'teal.500',
+                }}
+                bgColor='teal.400'
               >
                 Enter app
               </Button>
