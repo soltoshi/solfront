@@ -22,7 +22,7 @@ const actionCodeSettings = {
 
 const sendSignInLinkToMerchantEmail = async (email: string) => {
   if (window.location.hostname != 'localhost') {
-    actionCodeSettings.url = `${window.location.host}/magic_link`
+    actionCodeSettings.url = `https://${window.location.host}/magic_link`
   }
   console.log('[auth] action url is: ', actionCodeSettings.url);
   console.log('[auth] dynamic link domain is: ', actionCodeSettings.dynamicLinkDomain);
