@@ -58,7 +58,7 @@ export default function PaymentLinkCard(props: PaymentLinkCardProps) {
     if ('localhost' == window.location.hostname) {
       setPayLinkHref(`http://localhost:3000/pay/${getSlugFromLink(props.link)}`);
     } else {
-      setPayLinkHref(`https://solfront.app/${getSlugFromLink(props.link)}`)
+      setPayLinkHref(`https://solfront.app/pay/${getSlugFromLink(props.link)}`)
     }
   }, [props.link])
 
