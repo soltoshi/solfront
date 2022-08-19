@@ -9,7 +9,6 @@ import { NextPageWithLayout } from "./_app";
 
 const Auth: NextPageWithLayout = () => {
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
 
   const {isLoggedIn, merchantId} = useAuthContext();
