@@ -17,7 +17,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   const renderWithLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      { renderWithLayout(<Component {...pageProps} />) }
+      { renderWithLayout(<Component {...pageProps} key={ router.route }/>) }
     </ChakraProvider>
   );
 }

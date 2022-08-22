@@ -5,6 +5,7 @@ import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adap
 import { clusterApiUrl } from '@solana/web3.js'
 import { PayContextProvider } from '../context/PayContext'
 import PayContainer from './PayContainer'
+import withTransition from './withTransition'
 
 const PayLayout = ({children}) => {
   // Solana network to use
@@ -28,4 +29,4 @@ const PayLayout = ({children}) => {
   );
 }
 
-export default PayLayout;
+export default withTransition(PayLayout);

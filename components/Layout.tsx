@@ -2,6 +2,7 @@ import NavBar from "./NavBar"
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Text, Box, Center, Link } from "@chakra-ui/react";
+import withTransition from "./withTransition";
 
 const Layout = ({children}) => {
   return (
@@ -49,4 +50,4 @@ const Layout = ({children}) => {
   )
  }
 
- export default Layout;
+ export default withTransition(Layout);
