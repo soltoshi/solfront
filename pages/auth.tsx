@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
+import { Alert, Box, Button, Container, Flex, FormControl, FormLabel, Heading, Input, Stack, useColorModeValue} from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -60,6 +60,14 @@ const Auth: NextPageWithLayout = () => {
                       placeholder={'Your email'}
                       type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                   </FormControl>
+
+                  {
+                    emailSent &&
+                    <Alert status={'info'} fontSize={'xs'} bgColor={'gray.100'} width={'auto'} rounded={'md'}>
+                      The email sent will likely go to your spam box.
+                    </Alert>
+                  }
+
                   <Button
                     bg={'blue.400'}
                     color={'white'}
